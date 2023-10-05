@@ -4,22 +4,25 @@ dotenv.config()
 
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
-
+import cors from 'cors'; // Cross-Origin Resource Sharing → díky tomu můžeme posílat data mezi různými porty
 
 import Project from './models/Model';
 
 const app = express();
+
+app.use(cors());
 // bez toho nemůžeme přes request poslat JSON
-app.use(express.json())
+app.use(express.json());
 
 const PORT = 5000;
 
-app.get('/project', (req: Request, res: Response) => {
-  res.send("hello world, sdsds")
+app.get('/project', async (req: Request, res: Response) => {
+  const projects = await Project.find();  
+  res.json(projects)
 });
+
 // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
 app.post('/project', async (req: Request, res: Response) => {
-  
   const newProject = new Project({
     title: req.body.title,
   });

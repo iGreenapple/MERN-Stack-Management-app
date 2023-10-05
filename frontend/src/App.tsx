@@ -1,34 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [projects, setProjects] = useState([]);
+  const [title, setTitle] = useState('')
+
+  const handleCreateProject = async (e: React.FormEvent) => {
+    e.preventDefault(); // preventDefault zabraňuje tomu aby se po submitu refreshla stránka
+    await fetch('http://localhost:5000/project', {
+      method: 'POST',
+      body: JSON.stringify({
+        title
+      }),
+      headers: {
+        "Content-Type": "application/json", // zde určujeme datový typ obsahu body (vtp na JSON)
+      },
+    });
+    setTitle(""); // po odeslání data na server se input vyprázdní
+  };
+  // useEffect se spustí při načtení komponenty
+  useEffect(() => {
+    async function fetchProjects() {
+      const response = await fetch('http://localhost:5000/project'); // z fetch dostáváme Response, kterou musíme ještě převést na objekt
+      
+      const loadedProjects = await response.json(); // převedení na objekt
+      
+      setProjects(loadedProjects)
+    }
+    fetchProjects();
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='w-screen flex flex-col justify-center items-center'>
+      <form onSubmit={handleCreateProject}>
+        <label htmlFor='project-title'>Project Title</label>
+        <input 
+          id='project-title'
+          value={title}
+          // v ts je třeba specifikovat o jaký druh eventu se jedná a pro jaký element
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setTitle(event.target.value);
+          }}
+        />
+        <button>Create Project</button>
+      </form>
+      <div className="projects flex flex-wrap gap-4">
+        {
+          projects.map((project) => {
+            return (
+              <div key={project._id} className='p-[5px] border rounded'>
+                {project.title}
+              </div>
+            )
+          })
+        }
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
