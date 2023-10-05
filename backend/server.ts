@@ -1,5 +1,10 @@
+// dotenv slouží k tomu, že při spuštění serveru projde soubor .env a načte z něj potřebné proměnné
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
+
 
 import Project from './models/Model';
 
@@ -25,8 +30,10 @@ app.post('/project', async (req: Request, res: Response) => {
 
 // Připojení k databázi → až po připojení se spustí i port 5000
 // nezapomenout za local host napsat i jméno databáze (projects)
+// místo celé URL adresy využíváme import z .env pro bezpečnější připojení (viz dotenv)
 mongoose
-  .connect("mongodb://127.0.0.1:27017/projects")
+  // .connect("mongodb://127.0.0.1:27017/projects")
+  .connect(process.env.MONGO_URL!)
   .then(() => {
   console.log(`Listening on port ${PORT}`);
   app.listen(PORT);
