@@ -31,6 +31,19 @@ app.post('/project', async (req: Request, res: Response) => {
   res.json(createProject)
 });
 
+app.delete('/project/:projectId', async (req: Request, res: Response) => {
+  // 1. get the project id from url
+  const projectId = req.params.projectId;
+  // 2. delete the project from mongoDB
+  await Project.findByIdAndDelete(projectId)
+  // 3. return the deleted project to the user who made request
+  res.json({
+    message: "successfully deleted",
+  });
+});
+
+
+
 // Připojení k databázi → až po připojení se spustí i port 5000
 // nezapomenout za local host napsat i jméno databáze (projects)
 // místo celé URL adresy využíváme import z .env pro bezpečnější připojení (viz dotenv)
