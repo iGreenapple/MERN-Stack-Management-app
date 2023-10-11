@@ -19,5 +19,11 @@ frontend jsme vytvořili přes vite → npm create vite@latest frontend (rovnou 
   framework - react
   variant . typescript
 
+## modal 
+→ popup okno vykreslující se nad ostatními (z-index)
+Princip v react:
+ - V Parent komponentě vytvoříme use state a jak proměnnou (boolean) tak SET posíláme přes props do child komponenty
+ - V Child komponentě nám pak proměnná určuje přes IF co vrátíme v return a SET nám umožňuje změnit proměnou i z child komponenty
+
 ## instalace Tailwind
   npm install -D tailwindcss postcss autoprefixer

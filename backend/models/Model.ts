@@ -4,7 +4,11 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema({
-  title: String
+  title: String,
+  description: String,
+  tasks: [String],
+  number_of_tasks: Number,
+  completed_tasks: Number,
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);
