@@ -14,10 +14,11 @@ module.exports =  {
     },
     extend: {
       colors: {
-        'white': '#F5F5F5',
+        'light': '#F5F5F5',
+        'dark': '#121212',
         'red': '#F05454',
         'navy': '#30475E',
-        'black': '#121212'
+        'grey': '#888888'
       }
     },
     fontFamily: {

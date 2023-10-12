@@ -12,8 +12,8 @@ import CreateProject from './CreateProject';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState<TProject[]>([]);
-
-  const [createModal, setCreateModal] = useState(false)
+  // useState pro tevírání create modal
+  const [openModal, setOpenModal] = useState(false)
 
   // useEffect se spustí při načtení komponenty a načítá data
   useEffect(() => {
@@ -24,13 +24,13 @@ const Dashboard = () => {
     fetchProjects();
   }, [])
 
-  const handleCreateProject = async (e: React.FormEvent, title: string, description: string) => {
+  const handleCreateProject = async (title: string, description: string) => {
     console.log("creating...");
-    
     // provádění tzv. Optimistic Updates → jedná se o update UI, který předpokládá, že dojde na straně serveru k nějaké změně, takže tu změnu už rovnou provede v UI
     // provedeme ho tak, že si necháme v proměnné project uložit POST request a poté pomocí metody .json vytvoříme lokální proměnou project, kterou přidáme přes setProjects
     const project = await createProject(title, description);
     setProjects([...projects, project])
+    setOpenModal(!openModal)
   };
 
   const handleDeleteProject = async (projectId: string) => {
@@ -42,11 +42,13 @@ const Dashboard = () => {
   return (
     <div className="relative w-screen h-full flex flex-auto flex-col items-center justify-evenly gap-5">
       <button 
-        className='absolute p-2 top-5 right-5 border-black border-2 rounded-full'
-        onClick={() => setCreateModal(true)}>
-        Create
+        className='absolute p-2 top-5 right-5 text-lg border-black border-2 rounded-full'
+        onClick={() => setOpenModal(!openModal)}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 stroke-dark stroke-[3px]" fill="none" viewBox="0 0 40 40">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M20 0 L20 40 M0 20 L40 20" />
+        </svg>
       </button>
-      <CreateProject open={createModal} onClose={() => setCreateModal(!createModal)} createProject={handleCreateProject} />
+      <CreateProject open={openModal} setModal={() => setOpenModal(!openModal)} handleCreateProject={handleCreateProject} />
       
       <div className='flex flex-wrap justify-center gap-4 text-center'>
         {
