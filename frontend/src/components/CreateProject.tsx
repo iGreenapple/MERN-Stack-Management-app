@@ -8,9 +8,9 @@ const CreateProject: React.FC<{ open: boolean;  setModal: any; handleCreateProje
 
   const afterSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // preventDefault zabraňuje tomu aby se po submitu refreshla stránka
-    console.log(`Title: ${title}`);
-    console.log(`Description: ${description}`);
+
     await handleCreateProject(title, description)
+    
     setTitle(""); // po odeslání data na server se input vyprázdní
     setDescription("");
   }

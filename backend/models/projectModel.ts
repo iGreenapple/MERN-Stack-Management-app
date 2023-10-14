@@ -1,16 +1,8 @@
 import mongoose from "mongoose";
+import TaskModel from "./taskModel";
 
 // definujeme zkratku pro mongoose scheme
 const Schema = mongoose.Schema;
-
-// Task model
-const TaskSchema = new Schema({
-  title: String,
-  description: String,
-  stage: { type: Number, min: 1, max: 3 }
-});
-
-const TaskModel = mongoose.model("Task", TaskSchema);
 
 const ProjectSchema = new Schema({
   title: String,
@@ -22,7 +14,5 @@ const ProjectSchema = new Schema({
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);
-
-
 
 export default ProjectModel;

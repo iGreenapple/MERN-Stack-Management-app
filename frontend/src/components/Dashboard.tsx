@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Project from './Project';
 
-import { getProject } from '../api/getProjects';
+import { getProjects } from '../api/getProjects';
 import { createProject } from '../api/createProjects';
 import { deleteProject } from '../api/deleteProject';
 
@@ -18,7 +18,7 @@ const Dashboard = () => {
   // useEffect se spustí při načtení komponenty a načítá data
   useEffect(() => {
     async function fetchProjects() {
-      const loadedProjects = await getProject();
+      const loadedProjects = await getProjects();
       setProjects(loadedProjects)
     }
     fetchProjects();
@@ -29,8 +29,9 @@ const Dashboard = () => {
     // provádění tzv. Optimistic Updates → jedná se o update UI, který předpokládá, že dojde na straně serveru k nějaké změně, takže tu změnu už rovnou provede v UI
     // provedeme ho tak, že si necháme v proměnné project uložit POST request a poté pomocí metody .json vytvoříme lokální proměnou project, kterou přidáme přes setProjects
     const project = await createProject(title, description);
-    setProjects([...projects, project])
+    // create modal se zavře po vytvoření projektu
     setOpenModal(!openModal)
+    setProjects([...projects, project])
   };
 
   const handleDeleteProject = async (projectId: string) => {
@@ -56,7 +57,7 @@ const Dashboard = () => {
             <Project 
               key={project._id}
               project={project}
-              deleteProjects={() => handleDeleteProject(project._id)}
+              deleteProjects={handleDeleteProject}
             />
           ))
         }

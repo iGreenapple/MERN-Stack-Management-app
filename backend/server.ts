@@ -6,7 +6,8 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'; // cors - Cross-Origin Resource Sharing → díky tomu můžeme posílat data mezi různými porty
 
-import { getProjectRoute, createProjectRoute, deleteProjectRoute } from './routes/projectRoutes';
+import { getAllProjectsRoute, createProjectRoute, deleteProjectRoute } from './routes/dashboardRoutes';
+import { getOneProjectRoute } from './routes/projectRoutes'
 
 const app = express();
 
@@ -17,9 +18,11 @@ const PORT = 5000;
 
 app.get('/dashboard', )
 
-app.get('/project', getProjectRoute);
+app.get('/project', getAllProjectsRoute);
 app.post('/project', createProjectRoute);
 app.delete('/project/:projectId', deleteProjectRoute);
+
+app.get('/project/:projectId', getOneProjectRoute)
 
 
 // Připojení k databázi → až po připojení se spustí i port 5000

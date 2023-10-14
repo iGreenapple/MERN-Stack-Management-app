@@ -1,3 +1,4 @@
+import React from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -5,17 +6,18 @@ import {
   Route
 } from "react-router-dom";
 
-import { RootLayout, Home, Dashboard, ProjectMenu} from './components'
+import { RootLayout, Home, Dashboard, ProjectBoard} from './components'
 
 
 import Test from './components/Test';
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path='/dashboard' element={<Dashboard />} />
-      {/* <Route path='/project/:projectId' element={<ProjectMenu />} /> */}
+      <Route path='/project/:projectId' element={<ProjectBoard />} />
       <Route path='/test' element={<Test />} />
     </Route>
   )
@@ -23,7 +25,10 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+    
   )
 }
 

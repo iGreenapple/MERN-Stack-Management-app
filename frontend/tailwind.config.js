@@ -25,6 +25,8 @@ module.exports =  {
       'header': ['Kanit', 'sans-serif']
     },
   },
-  plugins: [],
+  plugins: [
+    
+  ],
 }
 

@@ -8,3 +8,8 @@ export type TProject = {
   completed_tasks: number
 }
 
+export type TTask = {
+  title: String,
+  stage: { type: Number, min: 1, max: 3 }
+}
+
