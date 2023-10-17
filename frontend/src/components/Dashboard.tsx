@@ -7,7 +7,7 @@ import { createProject } from '../api/createProjects';
 import { deleteProject } from '../api/deleteProject';
 
 import { TProject } from '../types/types';
-import CreateProject from './CreateProject';
+import CreateModal from './CreateModal';
 
 
 const Dashboard = () => {
@@ -49,9 +49,9 @@ const Dashboard = () => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M20 0 L20 40 M0 20 L40 20" />
         </svg>
       </button>
-      <CreateProject open={openModal} setModal={() => setOpenModal(!openModal)} handleCreateProject={handleCreateProject} />
+      <CreateModal open={openModal} setModal={() => setOpenModal(!openModal)} handleCreateProject={handleCreateProject} />
       
-      <div className='flex flex-wrap justify-center gap-4 text-center'>
+      <div className='flex flex-wrap justify-center gap-8 text-center'>
         {
           projects.map((project : TProject) => (
             <Project 

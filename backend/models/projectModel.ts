@@ -7,10 +7,7 @@ const Schema = mongoose.Schema;
 const ProjectSchema = new Schema({
   title: String,
   description: String,
-  tasks: {
-    type: [Schema.Types.ObjectId],
-    ref: 'TaskModel'
-  },
+  tasks: Array
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);

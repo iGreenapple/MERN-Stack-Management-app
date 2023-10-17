@@ -19,6 +19,9 @@ module.exports =  {
         'red': '#F05454',
         'navy': '#30475E',
         'grey': '#888888'
+      },
+      boxShadow: {
+        '3xl': '15px 15px 20px -5px rgb(0 0 0 / 0.6), 5px 5px 5px -5px rgb(0 0 0 / 0.6)'
       }
     },
     fontFamily: {
