@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
-import { getProject } from '../api/getProject'
-
-import { TProject, TUpdateProject  } from '../types/types';
-
 import { useParams } from 'react-router-dom';
+
+import { getProject } from '../api/getProject'
+import { updateProject } from '../api/updateProject';
 
 import UpdateModal from './UpdateModal';
 
-import { updateProject } from '../api/updateProject';
+import { TProject, TUpdateProject  } from '../types/types';
 
 const ProjectBoard = () => {
   // název proměnné v useParams, musí odpovídat názvu v url adrese /project/:projectId → const { projectId }
@@ -17,6 +16,7 @@ const ProjectBoard = () => {
   // více přístupů na https://bobbyhadz.com/blog/typescript-argument-type-undefined-not-assignable-parameter-type-string
   const openedProjectId = projectId !== undefined ? projectId : ""
   
+  const [isLoading, setIsLoading] = useState(false) // useState zajišťující, že se komponenta načte až se načtou i data (stával se takový chvilkový tik, kdy některé elementy byli prázdné)
   const [project, setProject] = useState<TProject>();
   // const [task, setTask] = useState<TTask>()
   const [openModal, setOpenModal] = useState(false)
@@ -25,6 +25,7 @@ const ProjectBoard = () => {
     const fetchProject = async () => {
       const loadedProject = await getProject(openedProjectId);
       setProject(loadedProject)
+      setIsLoading(true) // musí se provést až po fetch
     }
     fetchProject()
   }, [])
@@ -48,7 +49,8 @@ const ProjectBoard = () => {
     }
     
   }
-
+  // načte komponentu jen pokud je isLoading true, respektive, pokud data jsou fetchnutá. Jinak se zobrazí hláška "Loading..."
+  if (!isLoading) return <p>Loading...</p>
   return (
     <div className='relative bw-border w-full h-[80%] p-10'>
       <div className='flex justify-between items-center'>
