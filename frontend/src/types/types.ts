@@ -7,8 +7,8 @@ export type TProject = {
 }
 
 export type TTask = {
-  title: String,
-  stage: { type: Number, min: 1, max: 3 }
+  title: string,
+  stage: number
 }
 
 export type TUpdateProject = {

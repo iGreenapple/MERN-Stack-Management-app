@@ -6,7 +6,7 @@ import { updateProject } from '../api/updateProject';
 
 import UpdateModal from './UpdateModal';
 
-import { TProject, TUpdateProject  } from '../types/types';
+import { TProject, TTask, TUpdateProject } from '../types/types';
 
 const ProjectBoard = () => {
   // název proměnné v useParams, musí odpovídat názvu v url adrese /project/:projectId → const { projectId }
@@ -18,8 +18,9 @@ const ProjectBoard = () => {
   
   const [isLoading, setIsLoading] = useState(false) // useState zajišťující, že se komponenta načte až se načtou i data (stával se takový chvilkový tik, kdy některé elementy byli prázdné)
   const [project, setProject] = useState<TProject>();
-  // const [task, setTask] = useState<TTask>()
+  const [addedTask, setAddedTask] = useState()
   const [openModal, setOpenModal] = useState(false)
+
 
   useEffect(()=> {
     const fetchProject = async () => {
@@ -28,12 +29,7 @@ const ProjectBoard = () => {
       setIsLoading(true) // musí se provést až po fetch
     }
     fetchProject()
-  }, [])
-
-  const AfterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submit new task form");
-  }
+  }, []);
 
   const handleUpdateProject = async (updatedData : TUpdateProject) => {
     // kvůli typu TProject | undefined musím provést podmínku, že pokud je project true pokračuj.
@@ -46,12 +42,21 @@ const ProjectBoard = () => {
       setProject(updatedProject)
       await updateProject(openedProjectId, updatedData.title, updatedData.description)
       setOpenModal(!openModal)
-    }
+    };
+  };
+
+  // const handleAddTask = async (e: React.FormEvent) => {
+  //   e.preventDefault();
     
-  }
+  //   if (project) 
+  //     const updatedProject : TProject = {}
+    
+  // };
+
+
   // načte komponentu jen pokud je isLoading true, respektive, pokud data jsou fetchnutá. Jinak se zobrazí hláška "Loading..."
-  if (!isLoading) return <p>Loading...</p>
-  return (
+  // if (!isLoading) return <p>Loading...</p>
+  if (isLoading) return (
     <div className='relative bw-border w-full h-[80%] p-10'>
       <div className='flex justify-between items-center'>
         <h1 className='font-bold text-3xl mb-5'>{project?.title}</h1>
@@ -72,8 +77,8 @@ const ProjectBoard = () => {
           <li className='bw-border'
           >{task}</li>)
         )}
-        <form onSubmit={AfterSubmit} className='flex justify-center'>
-          <input className='w-full h-10 text-center' type="text" name='newTask' placeholder='Name of new task'/>
+        <form onSubmit={handleAddTask} className='flex justify-center'>
+          <input className='w-full h-10 text-center' type="text" name='newTask' value={addedTask} placeholder='Name of new task'/>
           <input type="submit" hidden />
         </form>
       </ul>
