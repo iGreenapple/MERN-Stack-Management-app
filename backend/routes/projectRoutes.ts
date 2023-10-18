@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Project from '../models/projectModel';
+import { Project, Task } from '../models/projectModel';
 
 
 // CREATE //
@@ -41,6 +41,25 @@ const updateOneProjectRoute = async (req: Request, res: Response) => {
   const updatedProject = await Project.findByIdAndUpdate(filter, update)
 }
 
+// UPDATE / ADD task
+const addTaskToProjectRoute = async (req: Request, res: Response) => {
+  const projectId = req.params.projectId;
+  const { task } = req.body;
+
+  const updatedProject  = await Project.findById(projectId);
+
+  if (!updatedProject) {
+    return res.status(404).json({ message: 'Projekt nebyl nalezen.'});
+  }
+  const newTask = new Task({
+      title: task
+    });
+  
+  updatedProject.tasks.push(newTask);
+  const savedProject = await updatedProject.save();
+  res.status(200).json(savedProject);
+}
+
 // DELETE //
 const deleteProjectRoute = async (req: Request, res: Response) => {
   // 1. get the project id from url
@@ -56,4 +75,4 @@ const deleteProjectRoute = async (req: Request, res: Response) => {
 
 
 
-export {getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute}
+export {getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute, addTaskToProjectRoute}
