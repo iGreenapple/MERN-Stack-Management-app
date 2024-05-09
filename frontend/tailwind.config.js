@@ -14,10 +14,10 @@ module.exports =  {
     },
     extend: {
       colors: {
-        'light': '#F5F5F5',
-        'dark': '#121212',
-        'red': '#F05454',
-        'navy': '#30475E',
+        'light': '#EAEAEA',
+        'dark': '#252A34',
+        'red': '#FF2E63',
+        'navy': '#08D9D6',
         'grey': '#888888'
       },
       boxShadow: {

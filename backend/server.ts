@@ -1,12 +1,13 @@
 // dotenv slouží k tomu, že při spuštění serveru projde soubor .env a načte z něj potřebné proměnné
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config() // metoda .config() načte soubor .env
 
-import express, { Request, Response } from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'; // cors - Cross-Origin Resource Sharing → díky tomu můžeme posílat data mezi různými porty
 
-import { getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute } from './routes/projectRoutes';
+// import jednotlivých route
+import { getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute, addTaskToProjectRoute } from './routes/projectRoutes';
 
 const app = express();
 
@@ -21,8 +22,9 @@ app.get('/project', getAllProjectsRoute);
 app.post('/project', createProjectRoute);
 app.delete('/project/:projectId', deleteProjectRoute);
 
-app.get('/project/:projectId', getOneProjectRoute)
-app.put('/project/:projectId', updateOneProjectRoute)
+app.get('/project/:projectId', getOneProjectRoute);
+app.put('/project/:projectId', updateOneProjectRoute);
+app.patch('/project/:projectId', addTaskToProjectRoute)
 
 
 // Připojení k databázi → až po připojení se spustí i port 5000

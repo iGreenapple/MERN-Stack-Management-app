@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { TProject, TUpdateProject } from '../types/types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 
 const UpdateModal: React.FC<{ actualProject:TProject | undefined; open: boolean;  setModal: any; handleUpdateProject: any;}> = ({actualProject, open, setModal, handleUpdateProject}) => {
@@ -28,11 +30,9 @@ const UpdateModal: React.FC<{ actualProject:TProject | undefined; open: boolean;
   
   if (!open) return null
   return (
-    <div className='absolute bw-border bg-white z-10 xl:w-[25%] lg:w-[288px] h-auto p-10'>
-      <button className='absolute top-2 right-2' onClick={setModal}>
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 stroke-dark stroke-[3px] hover:stroke-grey" fill="none" viewBox="0 0 32 32">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4 4 L28 28 M4 28 L28 4" />
-        </svg>
+    <div className='fixed top-1/2 left-1/2 -translate-x-[50%] -translate-y-1/2 bw-border bg-white z-10 xl:w-[25%] lg:w-[288px] h-auto p-10'>
+      <button className='absolute w-8 h-8 top-2 right-2' onClick={setModal}>
+        <FontAwesomeIcon icon="xmark" size='2xl'/>
       </button>
       <form onSubmit={handleFormSubmit} className='flex flex-col items-center gap-3'>
           <label className='text-dark-500' htmlFor='project-title'>Project Title</label>
