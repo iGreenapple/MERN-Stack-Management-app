@@ -6,8 +6,11 @@ import { updateProject } from '../api/updateProject';
 
 import UpdateModal from './UpdateModal';
 
-import { TProject, TTask, TUpdateProject } from '../types/types';
+import { TProject, TUpdateProject } from '../types/types';
 import { addTaskToProject } from '../api/addTask';
+
+
+import ProjectBoardColumn from './ProjectBoardColumn';
 
 const ProjectBoard = () => {
   // název proměnné v useParams, musí odpovídat názvu v url adrese /project/:projectId → const { projectId }
@@ -21,7 +24,6 @@ const ProjectBoard = () => {
   const [project, setProject] = useState<TProject>();
   const [addedTask, setAddedTask] = useState("")
   const [openModal, setOpenModal] = useState(false)
-
 
   useEffect(()=> {
     const fetchProject = async () => {
@@ -52,43 +54,54 @@ const ProjectBoard = () => {
     if (project) {
       await addTaskToProject(openedProjectId, addedTask)
     }
-    
   };
 
+  const handleDeleteTask =async (taskId: string) => {
+    // podmínka pro "project" zajišťuje aby nebyl typ "| undefined"  
+    if (project) {
+      const updatedProject = { ...project} // zde už je typ pouze TProject
+      updatedProject.tasks = project?.tasks.filter((task) => task._id !== taskId)
+      setProject(updatedProject)
+    }    
+  }
+
+  // filtrace tasků do tří kategorií
+  const todoTasks = project?.tasks.filter((task) => task.stage === 1);
+  const inProgressTasks = project?.tasks.filter((task) => task.stage === 2);
+  const completedTasks = project?.tasks.filter((task) => task.stage === 3);
 
   // načte komponentu jen pokud je isLoading true, respektive, pokud data jsou fetchnutá. Jinak se zobrazí hláška "Loading..."
   // if (!isLoading) return <p>Loading...</p>
   if (isLoading) return (
-    <div className='relative bw-border w-full h-[80%] p-10'>
-      <div className='flex justify-between items-center overflow-auto'>
+    <div className='relative bw-border w-full h-[80%] p-10 flex flex-col gap-5 overflow-auto'>
+      <div className='flex justify-between items-center'>
         <h1 className='font-bold text-3xl mb-5'>{project?.title}</h1>
         <button onClick={() => setOpenModal(!openModal)}>
           <svg width="24" height="24" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13.0207 5.82839L15.8491 2.99996L20.7988 7.94971L17.9704 10.7781M13.0207 5.82839L3.41405 15.435C3.22652 15.6225 3.12116 15.8769 3.12116 16.1421V20.6776H7.65669C7.92191 20.6776 8.17626 20.5723 8.3638 20.3847L17.9704 10.7781M13.0207 5.82839L17.9704 10.7781" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/> </svg>
         </button>
       </div>
-      <div className='relative flex justify-center'>
-        <UpdateModal 
-          actualProject={project} 
-          open={openModal} 
-          setModal={() => setOpenModal(!openModal)} 
-          handleUpdateProject={handleUpdateProject}/>
-      </div>
       <p className='box line-clamp-4 mb-5'>{project?.description}</p>
       <p>{`${project?.tasks.length}`}</p>
-      <div className='overflow-y-auto'>
-        <ul className='flex flex-col overflow-auto gap-5'>
-        {project?.tasks.map((task, index) => (
-          <li key={index} className='bw-border w-[250px] h-[50px] text-center'
-          >{task.title}</li>)
-        )}
+      
+      <UpdateModal 
+        actualProject={project} 
+        open={openModal} 
+        setModal={() => setOpenModal(!openModal)} 
+        handleUpdateProject={handleUpdateProject}
+      />
+      
+      <div className='flex flex-col gap-5'>
+        <div className='flex flex-wrap gap-8 justify-evenly'>
+            <ProjectBoardColumn heading={"Not started"} tasks={todoTasks} deleteTask={handleDeleteTask} createTask={handleAddTask}/>
+            <ProjectBoardColumn heading={"In Progress"} tasks={inProgressTasks} deleteTask={handleDeleteTask} createTask={handleAddTask}/>
+            <ProjectBoardColumn heading={"Completed"} tasks={completedTasks} deleteTask={handleDeleteTask} createTask={handleAddTask}/>
+        </div>
+        
         <form onSubmit={handleAddTask} className='flex justify-center'>
-          <input className='w-full h-10 text-center' type="text" name='newTask' value={addedTask} placeholder='Name of new task' onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setAddedTask(event.target.value)}}/>
+          <input className='w-full h-10 text-center rounded-xl' type="text" name='newTask' value={addedTask} placeholder='Name of new task' onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setAddedTask(event.target.value)}}/>
           <input type="submit" hidden />
         </form>
-      </ul>
       </div>
-      
-      
     </div>
   )
 }

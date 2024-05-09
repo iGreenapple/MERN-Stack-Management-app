@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { Project, Task } from '../models/projectModel';
 
+const router = express.Router()
 
-// CREATE //
+
+
+// CREATE PROJECT //
 // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
 const createProjectRoute = async (req: Request, res: Response) => {
   const newProject = new Project({

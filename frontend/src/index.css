@@ -12,6 +12,11 @@
   color-scheme: dark;
 }
 
+.home-heading {
+  font-family: 'Kanit', sans-serif;
+  font-size: 4rem;
+}
+
 .logo {
   /* font-family: 'Bebas Neue', sans-serif; */
   font-family: 'Kanit', sans-serif; 
@@ -19,8 +24,8 @@
 
 .bw-border{
   border: 2px solid black;
-  /* border-right-width: 8px;
-  border-bottom-width: 8px; */
+  /* border-right-width: 8px; */
+  border-bottom-width: 8px;
   border-radius: 0.75rem;
   /* box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6); */
 }

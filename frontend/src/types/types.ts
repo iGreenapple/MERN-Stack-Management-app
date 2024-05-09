@@ -1,5 +1,6 @@
 // pokud používáme Typescript je důležité definovat proměnné, které uchováváme v useState
 export type TTask = {
+  _id: string,
   title: string,
   stage: number
 };

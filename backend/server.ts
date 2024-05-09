@@ -1,11 +1,12 @@
 // dotenv slouží k tomu, že při spuštění serveru projde soubor .env a načte z něj potřebné proměnné
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config() // metoda .config() načte soubor .env
 
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'; // cors - Cross-Origin Resource Sharing → díky tomu můžeme posílat data mezi různými porty
 
+// import jednotlivých route
 import { getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute, addTaskToProjectRoute } from './routes/projectRoutes';
 
 const app = express();
