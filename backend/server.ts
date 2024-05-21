@@ -1,41 +1,34 @@
-// dotenv slouží k tomu, že při spuštění serveru projde soubor .env a načte z něj potřebné proměnné
-import dotenv from 'dotenv'
-dotenv.config() // metoda .config() načte soubor .env
+import dotenv from 'dotenv';
+dotenv.config();
 
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors'; // cors - Cross-Origin Resource Sharing → díky tomu můžeme posílat data mezi různými porty
+import cors from 'cors'; 
 
-// import jednotlivých route
-import { getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute, addTaskToProjectRoute } from './routes/projectRoutes';
+// import project Routeru
+import projectRouter from './routes/projectRoutes';
+// import task Router
+import taskRouter from './routes/taskRoutes'
 
 const app = express();
 
 app.use(cors());
 app.use(express.json()); // bez toho nemůžeme přes request poslat JSON
 
+// načítání project Routeru
+app.use('/project', projectRouter)
+
+// načítání task Router na příslušní route
+app.use("/task", taskRouter)
+
+// definování portu na kterém je spuštěn frontend
 const PORT = 5000;
-
-app.get('/dashboard', )
-
-app.get('/project', getAllProjectsRoute);
-app.post('/project', createProjectRoute);
-app.delete('/project/:projectId', deleteProjectRoute);
-
-app.get('/project/:projectId', getOneProjectRoute);
-app.put('/project/:projectId', updateOneProjectRoute);
-app.patch('/project/:projectId', addTaskToProjectRoute)
-
-
-// Připojení k databázi → až po připojení se spustí i port 5000
-// nezapomenout za local host napsat i jméno databáze (projects)
-// místo celé URL adresy využíváme import z .env pro bezpečnější připojení (viz dotenv)
+// Připojení databáze MongoDB
+// Připojení k databázi → až po připojení databáze se spustí naslouchání na port 5000
+// nezapomenout za local host napsat i jméno databáze (projects) → .connect("mongodb://127.0.0.1:27017/projects")
 mongoose
-  // .connect("mongodb://127.0.0.1:27017/projects")
-  .connect(process.env.MONGO_URL!)
+  .connect(process.env.MONGO_URL!) // místo celé URL adresy využíváme import z .env pro bezpečnější připojení (viz dotenv)
   .then(() => {
   console.log(`Listening on port ${PORT}`);
   app.listen(PORT);
 });
-
-

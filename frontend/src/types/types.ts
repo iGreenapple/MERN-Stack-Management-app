@@ -2,7 +2,8 @@
 export type TTask = {
   _id: string,
   title: string,
-  stage: number
+  stage: number,
+  project: string
 };
 
 export type TProject = {

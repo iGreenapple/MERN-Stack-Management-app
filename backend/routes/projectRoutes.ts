@@ -1,13 +1,26 @@
 import express, { Request, Response } from 'express';
-import { Project, Task } from '../models/projectModel';
+import { Project } from '../models/projectModel';
 
 const router = express.Router()
 
+// GET PROJECTS - vrácení všech projektů
+// místo app zde používáme router.get, čímž do objektu router nahráváme jednotlivé HTTP request. Zde konkrétně get
+// je použito pouze '/', protože "domovský" route je pak definován v server.ts. DKyž něco napíšeme za lomítko, už to bude další úroveň 
+router.get('/', async (req: Request, res: Response) => {
+  const projects = await Project.find();  
+  res.json(projects)
+})
 
+// GET PROJECT - vrácení jednoho konkrétního projektu
+router.get('/:projectId', async (req: Request, res: Response) => {
+  const projectId = req.params.projectId;
+  const project = await Project.findById(projectId); 
+  res.json(project)
+})
 
 // CREATE PROJECT //
 // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
-const createProjectRoute = async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   const newProject = new Project({
     title: req.body.title,
     description: req.body.description
@@ -15,26 +28,11 @@ const createProjectRoute = async (req: Request, res: Response) => {
   //  Použití await znamená, že se kód zastaví a bude čekat na dokončení této operace.
   const createProject = await newProject.save();
   res.json(createProject)
-};
+})
 
-// GET/READ // vrácení všech projektů
-const getAllProjectsRoute = async (req: Request, res: Response) => {
-  const projects = await Project.find();  
-  res.json(projects)
-};
-
-// GET/READ // vrácení jednoho konkrétního projektu
-const getOneProjectRoute = async (req: Request, res: Response) => {
+// UPDATE PROJECT
+router.put('/:projectId', async (req: Request, res: Response) => {
   const projectId = req.params.projectId;
-  const project = await Project.findById(projectId); 
-  res.json(project)
-}
-
-// UPDATE
-const updateOneProjectRoute = async (req: Request, res: Response) => {
-
-  const projectId = req.params.projectId;
-
   const filter = { _id: projectId };
   const update = { 
     title: req.body.title,
@@ -42,29 +40,10 @@ const updateOneProjectRoute = async (req: Request, res: Response) => {
   };
 
   const updatedProject = await Project.findByIdAndUpdate(filter, update)
-}
+})
 
-// UPDATE / ADD task
-const addTaskToProjectRoute = async (req: Request, res: Response) => {
-  const projectId = req.params.projectId;
-  const { task } = req.body;
-
-  const updatedProject  = await Project.findById(projectId);
-
-  if (!updatedProject) {
-    return res.status(404).json({ message: 'Projekt nebyl nalezen.'});
-  }
-  const newTask = new Task({
-      title: task
-    });
-  
-  updatedProject.tasks.push(newTask);
-  const savedProject = await updatedProject.save();
-  res.status(200).json(savedProject);
-}
-
-// DELETE //
-const deleteProjectRoute = async (req: Request, res: Response) => {
+// DELETE PROJECT //
+router.delete('/:projectId', async (req: Request, res: Response) => {
   // 1. get the project id from url
   const projectId = req.params.projectId;
   // 2. delete the project from mongoDB
@@ -73,9 +52,6 @@ const deleteProjectRoute = async (req: Request, res: Response) => {
   res.json({
     message: "successfully deleted",
   });
-};
+}) 
 
-
-
-
-export {getAllProjectsRoute, getOneProjectRoute, createProjectRoute, deleteProjectRoute, updateOneProjectRoute, addTaskToProjectRoute}
+export default router
