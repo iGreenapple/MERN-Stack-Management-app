@@ -4,25 +4,23 @@ import { Task } from '../models/taskModel'
 // přes class express.Router() vytváříme obejkt, který v sobě uchovává více route najednou
 const router = express.Router()
 
-// GET TASKS
-router.get('/:projectId', async (req: Request, res: Response) => {
-  try {
-    // const { projectId } = req.query; ??????????
-    const projectId = req.params.projectId;
-    const tasks = await Task.find({ project: projectId });
-    res.json({tasks})
-  } 
-  catch (error) {
-    res.status(500).json({ message: 'Error fetching tasks', error });
-  }
-});
+// GET TASKS - zatím není třeba protože tasky načítáme během načítání jednoho projektu
+// router.get('/', async (req: Request, res: Response) => {
+//   try {
+//     const projectId = req.body.projectId;
+//     const tasks = await Task.find({ project: projectId });
+//     res.json({tasks})
+//   } 
+//   catch (error) {
+//     res.status(500).json({ message: 'Error fetching tasks', error });
+//   }
+// });
 
 // CREATE TASKS
-router.post('/:projectId', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     // 1. Getting the necessary information about the new task from the request
     const { taskTitle, projectId } = req.body
-    console.log(`3. step ${taskTitle}`);
     // 2. Create a new task
     const newTask = new Task({
       title: taskTitle,
@@ -39,26 +37,34 @@ router.post('/:projectId', async (req: Request, res: Response) => {
   }
 });
 
-// UPDATE TASKS
-// router.put('/:projectId/')
-// DELETE TASKS
+// UPDATE TASK
+router.put('/', async (req: Request, res: Response) => {
+  try {
+    const { tadkId, taskTitle} = req.body;
 
-// const addTaskToProjectRoute = async (req: Request, res: Response) => {
-//   const projectId = req.params.projectId;
-//   const { task } = req.body;
+    const filter = {}
+    const update = {}
+  }
+  catch (error) {
+    res.status(500).json({ message: 'Error updating task', error });
+  }
+})
 
-//   const updatedProject  = await Project.findById(projectId);
-
-//   if (!updatedProject) {
-//     return res.status(404).json({ message: 'Projekt nebyl nalezen.'});
-//   }
-//   const newTask = new Task({
-//       title: task
-//     });
-  
-//   updatedProject.tasks.push(newTask);
-//   const savedProject = await updatedProject.save();
-//   res.status(200).json(savedProject);
-// }
+// DELETE TASK
+router.delete('/', async (req: Request, res: Response) => {
+  try {
+    const { taskId } = req.body
+    const deletedTask = await Task.findByIdAndDelete(taskId)
+    if(!deletedTask) {
+      return res.status(404).json({ message: 'Task not found'})
+    }
+    res.json({
+      message: 'Task deleted successfully',
+    }); 
+  }
+  catch (error) {
+    res.status(500).json({ message: 'Error deleting task', error });
+  }
+})
 
 export default router;

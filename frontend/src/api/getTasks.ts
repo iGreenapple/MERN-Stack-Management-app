@@ -1,10 +1,23 @@
-import { TTask } from "../types/types";
+
 import { API_URL } from "./config";
 
-export async function getTasks(): Promise<TTask[]> {
-  const response = await fetch(`${API_URL}/api/tasks?projectId=${projectId}`, {
-    method: 'GET'
-  }); // z fetch dostáváme Response, kterou musíme ještě převést na objekt
-      
-  return response.json(); // převedení na objekt z fetch funkce
+export async function getTasks(projectId:string) {
+  try {
+    const response = await fetch(`${API_URL}/task/`, {
+      method: 'GET',
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId
+      }),
+    });
+    const data = await response.json();
+    console.log('Task loaded:', data);
+    return data;
+  }
+  catch (error) {
+    console.error('Error during task loading:', error);
+    throw error;
+  }
 }

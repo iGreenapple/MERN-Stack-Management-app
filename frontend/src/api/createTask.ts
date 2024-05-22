@@ -1,10 +1,8 @@
 import { API_URL } from "./config";
 
 export async function createTask(projectId:string, taskTitle: string) {
-  console.log(`2. step: API createTask: ${taskTitle}`);
-  
   try {
-    const response = await fetch(`${API_URL}/task/${projectId}`, {
+    const response = await fetch(`${API_URL}/task`, {
       method: 'POST',
       headers: {
           "Content-Type": "application/json",

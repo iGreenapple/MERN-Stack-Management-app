@@ -10,11 +10,6 @@ const Project: React.FC<{ project: TProject; deleteProjects: any}> = ({project, 
   const deleteClick = (projectId: string) => {
     deleteProjects(projectId)
   }
-  // limitace délky zobrazeného description
-  // const maxDescriptionLength = 100
-  // const truncatedDescription = project.description.length > maxDescriptionLength
-  //   ? `${project.description.substring(0, maxDescriptionLength)}...`
-  //   : project.description
 
   return (
     <div className='relative p-7 w-[330px] h-auto bw-border shadow-3xl'>

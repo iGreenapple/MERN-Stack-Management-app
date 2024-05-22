@@ -10,7 +10,6 @@ export type TProject = {
   _id: string,
   title: string,
   description: string,
-  tasks: TTask[],
 };
 
 export type TUpdateProject = {

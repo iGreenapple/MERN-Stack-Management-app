@@ -25,7 +25,9 @@ router.get('/:projectId', async (req: Request, res: Response) => {
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
+    // get all tasks related with project
     const tasks = await Task.find({project: projectId})
+    // return project with related tasks
     res.json({ project, tasks });
   }
   catch (error) {
