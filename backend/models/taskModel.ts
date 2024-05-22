@@ -2,7 +2,10 @@ import mongoose, { Schema } from "mongoose";
 
 // TASK MODEL
 const taskSchema : Schema = new Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   stage: { 
     type: Number, 
     min: 1, 
@@ -12,7 +15,8 @@ const taskSchema : Schema = new Schema({
   // První možnost - reference na project do kterého task patří
   project: {
     type: Schema.Types.ObjectId,
-    ref: 'Project'
+    ref: 'Project',
+    required: true
   }
 });
 

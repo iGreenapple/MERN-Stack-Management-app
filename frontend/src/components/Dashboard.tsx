@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Project from './Project';
 
 import { getProjects } from '../api/getProjects';
-import { createProject } from '../api/createProjects';
+import { createProject } from '../api/createProject';
 import { deleteProject } from '../api/deleteProject';
 
 import { TProject } from '../types/types';
@@ -12,7 +12,7 @@ import CreateModal from './CreateModal';
 
 const Dashboard = () => {
   const [projects, setProjects] = useState<TProject[]>([]);
-  // useState pro tevírání create modal
+  // useState pro otevírání create modal
   const [openModal, setOpenModal] = useState(false)
 
   // useEffect se spustí při načtení komponenty a načítá data

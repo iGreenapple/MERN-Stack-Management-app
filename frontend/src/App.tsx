@@ -1,4 +1,3 @@
-import React from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -8,8 +7,8 @@ import {
 
 import { RootLayout, Home, Dashboard, ProjectBoard} from './components';
 
-import Test from './components/Test';
-// import pro FontAwesome → library představuje knihovnu, do které si načteme potřebné symboly a poté je můžete použít napříč projektem
+import About from './components/About.tsx';
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 
@@ -19,16 +18,16 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path='/dashboard' element={<Dashboard />} />
-      <Route path='/project/:projectId' element={<ProjectBoard />} />
-      <Route path='/test' element={<Test />} />
+      <Route path='dashboard' element={<Dashboard />} />
+      <Route path='project/:projectId' element={<ProjectBoard />} />
+      <Route path='about' element={<About />} />
     </Route>
   )
 );
 
 function App() {
   return (
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   )
 }
 

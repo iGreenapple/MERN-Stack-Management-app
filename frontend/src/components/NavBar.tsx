@@ -6,7 +6,7 @@ const NavBar = () => {
       <NavLink to="/" className='logo font-medium text-dark text-4xl ml-7'>Project | M</NavLink>
       <ul className='flex justify-end gap-6 mr-8'>
         <NavLink className='logo text-lg' to="/dashboard">Dashboard |</NavLink>
-        <NavLink className='logo text-lg' to="/test">About |</NavLink>
+        <NavLink className='logo text-lg' to="/about">About |</NavLink>
         <NavLink className='logo text-lg' to="/">Login |</NavLink>
       </ul>
     </nav>

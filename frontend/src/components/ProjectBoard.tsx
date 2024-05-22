@@ -7,8 +7,7 @@ import { updateProject } from '../api/updateProject';
 import UpdateModal from './UpdateModal';
 
 import { TProject, TUpdateProject } from '../types/types';
-import { addTaskToProject } from '../api/addTask';
-
+import { createTask } from '../api/createTask';
 
 import ProjectBoardColumn from './ProjectBoardColumn';
 
@@ -48,12 +47,21 @@ const ProjectBoard = () => {
     };
   };
 
-  const handleAddTask = async (e: React.FormEvent) => {
+  const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
     setAddedTask("")
-    if (project) {
-      await addTaskToProject(openedProjectId, addedTask)
+
+    console.log(`1. step, task title: ${addedTask}`);
+    try {
+      const createdTask = await createTask(openedProjectId, addedTask);
+      console.log('Created task:', createdTask);
     }
+    catch (error) {
+      console.error('Error:', error);
+    }
+    // if (project) {
+    //   await createTask(openedProjectId, addedTask)
+    // }
   };
 
   const handleDeleteTask =async (taskId: string) => {
@@ -92,12 +100,12 @@ const ProjectBoard = () => {
       
       <div className='flex flex-col gap-5'>
         <div className='flex flex-wrap gap-8 justify-evenly'>
-            <ProjectBoardColumn heading={"Not started"} tasks={todoTasks} deleteTask={handleDeleteTask} createTask={handleAddTask}/>
-            <ProjectBoardColumn heading={"In Progress"} tasks={inProgressTasks} deleteTask={handleDeleteTask} createTask={handleAddTask}/>
-            <ProjectBoardColumn heading={"Completed"} tasks={completedTasks} deleteTask={handleDeleteTask} createTask={handleAddTask}/>
+            <ProjectBoardColumn heading={"Not started"} tasks={todoTasks} deleteTask={handleDeleteTask} createTask={handleCreateTask}/>
+            <ProjectBoardColumn heading={"In Progress"} tasks={inProgressTasks} deleteTask={handleDeleteTask} createTask={handleCreateTask}/>
+            <ProjectBoardColumn heading={"Completed"} tasks={completedTasks} deleteTask={handleDeleteTask} createTask={handleCreateTask}/>
         </div>
         
-        <form onSubmit={handleAddTask} className='flex justify-center'>
+        <form onSubmit={handleCreateTask} className='flex justify-center'>
           <input className='w-full h-10 text-center rounded-xl' type="text" name='newTask' value={addedTask} placeholder='Name of new task' onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setAddedTask(event.target.value)}}/>
           <input type="submit" hidden />
         </form>
