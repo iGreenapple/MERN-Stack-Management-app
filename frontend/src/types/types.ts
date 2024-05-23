@@ -9,11 +9,16 @@ export type TTask = {
 export type TProject = {
   _id: string,
   title: string,
-  description: string,
+  description: string
+};
+
+export type TProjectResponse = {
+  project: TProject,
+  tasks: TTask[]
 };
 
 export type TUpdateProject = {
-    title: string,
-    description: string
-  }
+  title: string,
+  description: string
+};
 

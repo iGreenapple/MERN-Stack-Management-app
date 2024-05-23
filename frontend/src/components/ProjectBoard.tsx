@@ -7,9 +7,10 @@ import { updateProject } from '../api/updateProject';
 import UpdateModal from './UpdateModal';
 
 import { TProject, TUpdateProject } from '../types/types';
-import { createTask } from '../api/createTask';
+
 
 import ProjectBoardColumn from './ProjectBoardColumn';
+import useTasks from '../hooks/useTasks';
 
 const ProjectBoard = () => {
   // název proměnné v useParams, musí odpovídat názvu v url adrese /project/:projectId → const { projectId }
@@ -18,69 +19,31 @@ const ProjectBoard = () => {
   // Typescript totiž předpokládá, že z useParams můžeme dostat string nebo nic (undefined)
   // více přístupů na https://bobbyhadz.com/blog/typescript-argument-type-undefined-not-assignable-parameter-type-string
   const openedProjectId = projectId !== undefined ? projectId : ""
+  const { tasks, project, handleCreateTask, handleUpdateTask, handleDeleteTask } = useTasks(openedProjectId)
   
-  const [isLoading, setIsLoading] = useState(false) // useState zajišťující, že se komponenta načte až se načtou i data (stával se takový chvilkový tik, kdy některé elementy byli prázdné)
-  const [project, setProject] = useState<TProject>();
-  const [addedTask, setAddedTask] = useState("")
+  const [addedTask, setAddedTask] = useState('');
+  
+  // const [isLoading, setIsLoading] = useState(false) // useState zajišťující, že se komponenta načte až se načtou i data (stával se takový chvilkový tik, kdy některé elementy byli prázdné)
+
   const [openModal, setOpenModal] = useState(false)
 
-  useEffect(()=> {
-    const fetchProject = async () => {
-      const loadedProject = await getProject(openedProjectId);
-      setProject(loadedProject)
-      setIsLoading(true) // musí se provést až po fetch
-    }
-    fetchProject()
-  }, []);
-
-  const handleUpdateProject = async (updatedData : TUpdateProject) => {
-    // kvůli typu TProject | undefined musím provést podmínku, že pokud je project true pokračuj.
-    if (project) {
-      // zde smíchám data z project a updatedData
-      const updatedProject : TProject = {
-        ...project,
-        ...updatedData
-      };
-      setProject(updatedProject)
-      await updateProject(openedProjectId, updatedData.title, updatedData.description)
-      setOpenModal(!openModal)
-    };
-  };
-
-  const handleCreateTask = async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAddedTask("")
-
-    console.log(`1. step, task title: ${addedTask}`);
-    try {
-      const createdTask = await createTask(openedProjectId, addedTask);
-      console.log('Created task:', createdTask);
-    }
-    catch (error) {
-      console.error('Error:', error);
-    }
-    // if (project) {
-    //   await createTask(openedProjectId, addedTask)
-    // }
-  };
-
-  const handleDeleteTask =async (taskId: string) => {
-    // podmínka pro "project" zajišťuje aby nebyl typ "| undefined"  
-    if (project) {
-      const updatedProject = { ...project} // zde už je typ pouze TProject
-      updatedProject.tasks = project?.tasks.filter((task) => task._id !== taskId)
-      setProject(updatedProject)
-    }    
+    await handleCreateTask(addedTask);
+    setAddedTask('');
   }
 
   // filtrace tasků do tří kategorií
-  const todoTasks = project?.tasks.filter((task) => task.stage === 1);
-  const inProgressTasks = project?.tasks.filter((task) => task.stage === 2);
-  const completedTasks = project?.tasks.filter((task) => task.stage === 3);
+  const todoTasks = tasks.filter((task) => task.stage === 1);
+  const inProgressTasks = tasks.filter((task) => task.stage === 2);
+  const completedTasks = tasks.filter((task) => task.stage === 3);
 
   // načte komponentu jen pokud je isLoading true, respektive, pokud data jsou fetchnutá. Jinak se zobrazí hláška "Loading..."
   // if (!isLoading) return <p>Loading...</p>
-  if (isLoading) return (
+  if (!project) {
+    return <div>Loading...</div>;
+  } 
+  return (
     <div className='relative bw-border w-full h-[80%] p-10 flex flex-col gap-5 overflow-auto'>
       <div className='flex justify-between items-center'>
         <h1 className='font-bold text-3xl mb-5'>{project?.title}</h1>
@@ -89,13 +52,13 @@ const ProjectBoard = () => {
         </button>
       </div>
       <p className='box line-clamp-4 mb-5'>{project?.description}</p>
-      <p>{`${project?.tasks.length}`}</p>
+      {/* <p>{`${project?.tasks.length}`}</p> */}
       
       <UpdateModal 
         actualProject={project} 
         open={openModal} 
         setModal={() => setOpenModal(!openModal)} 
-        handleUpdateProject={handleUpdateProject}
+        handleUpdateProject={null}
       />
       
       <div className='flex flex-col gap-5'>
@@ -105,7 +68,7 @@ const ProjectBoard = () => {
             <ProjectBoardColumn heading={"Completed"} tasks={completedTasks} deleteTask={handleDeleteTask} createTask={handleCreateTask}/>
         </div>
         
-        <form onSubmit={handleCreateTask} className='flex justify-center'>
+        <form onSubmit={handleFormSubmit} className='flex justify-center'>
           <input className='w-full h-10 text-center rounded-xl' type="text" name='newTask' value={addedTask} placeholder='Name of new task' onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setAddedTask(event.target.value)}}/>
           <input type="submit" hidden />
         </form>

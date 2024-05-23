@@ -38,7 +38,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // UPDATE TASK
-router.put('/', async (req: Request, res: Response) => {
+router.put('/:taskId', async (req: Request, res: Response) => {
   try {
     const { tadkId, taskTitle} = req.body;
 
