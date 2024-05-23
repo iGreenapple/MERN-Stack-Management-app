@@ -41,8 +41,6 @@ const useProjects = (): UseProjectsReturn => {
 
   const toggleModal = () => {
     setOpenModal(!openModal);
-    console.log(openModal);
-    
   };
 
   // Funkce pro přidání projektu:
