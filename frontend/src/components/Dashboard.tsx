@@ -7,7 +7,7 @@ import useProjects from '../hooks/useProjects';
 
 const Dashboard = () => {
   // použité useState a handlery načítáme z vlastního hooku useProjects
-  const { projects, openModal, toggleModal, handleDeleteProject } = useProjects();
+  const { projects, openModal, toggleModal, handleCreateProject, handleDeleteProject } = useProjects();
 
   return (
     <div className="relative w-screen h-full flex flex-auto flex-col items-center justify-evenly gap-5">
@@ -19,8 +19,7 @@ const Dashboard = () => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M20 0 L20 40 M0 20 L40 20" />
         </svg>
       </button>
-      <CreateModal open={openModal} setModal={toggleModal}/>
-
+      <CreateModal open={openModal} setModal={toggleModal} handleCreateProject={handleCreateProject} />
       <div className='flex flex-wrap justify-center gap-8 text-center'>
         {
           projects.map((project : TProject) => (

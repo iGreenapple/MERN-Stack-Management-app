@@ -1,7 +1,8 @@
+import { TProject } from "../types/types";
 import { API_URL } from "./config";
 
-// Pro přehlednost kódu přesuneme fetch pro vytvoření projektu do samostatné složky/funkce (DŮLEŽITÉ - nadefinovat input a return fukce, tak aby to sedělo v navazujícím kódu)
-export async function createProject(projectTitle: string, projectDescription: string) {
+// Pro přehlednost kódu přesuneme fetch pro vytvoření projektu do samostatné složky/funkce (DŮLEŽITÉ - nadefinovat input a return funkce, tak aby to sedělo v navazujícím kódu)
+export async function createProject(projectTitle: string, projectDescription: string): Promise<TProject> {
   try {
     const response = await fetch(`${API_URL}/project`, {
       method: 'POST',
@@ -13,13 +14,12 @@ export async function createProject(projectTitle: string, projectDescription: st
         projectDescription
       }),
     });
-    const data = response.json()
-    console.log('New project created:', data);
-    return data
+    const projectData : TProject = await response.json()
+    console.log('New project created:', projectData);
+    return projectData
   }
   catch (error) {
     console.error('Error during project creation:', error);
     throw error;
   }
-  
 }

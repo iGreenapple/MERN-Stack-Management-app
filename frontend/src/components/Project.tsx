@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Přesnější typová kontrola v komponentě
 // tímto typescriptu říkám, že očekávám vlastnost 'data' typu 'TProject' v komponentě Project
-const Project: React.FC<{ project: TProject; deleteProjects: any}> = ({project, deleteProjects}) => {
+interface ProjectProps {
+  project: TProject; 
+  deleteProjects: any
+}
 
-  // console.log(project);
-
+const Project: React.FC<ProjectProps> = ({project, deleteProjects}) => {
   return (
     <div className='relative p-7 w-[330px] h-auto bw-border shadow-3xl'>
       <button className='absolute w-8 h-8 top-2 right-2' onClick={() => deleteProjects(project._id)}>

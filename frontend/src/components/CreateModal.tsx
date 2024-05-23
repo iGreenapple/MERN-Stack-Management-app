@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
-import useProjects from '../hooks/useProjects';
+interface CreateModalProps {
+  open: boolean;  
+  setModal: any;
+  handleCreateProject: (title: string, description: string) => Promise<void>;
+}
 
-const CreateModal: React.FC<{ open: boolean;  setModal: any}> = ( {open, setModal } ) => {
-
-  const { handleCreateProject } = useProjects()
+const CreateModal: React.FC<CreateModalProps> = ( {open, setModal, handleCreateProject } ) => {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // preventDefault zabraňuje tomu aby se po submitu refreshla stránka
-    await handleCreateProject(title, description)
-    setTitle(""); // po odeslání data na server se input vyprázdní
-    setDescription("");
-    setModal(!open);
+    e.preventDefault();
+    try {
+      await handleCreateProject(title, description)
+      setTitle("");
+      setDescription("");
+    }
+    catch (error) {
+      console.error('Failed during form submit:', error);
+    }
+    setModal(!open); 
   }
   
   if (!open) return null

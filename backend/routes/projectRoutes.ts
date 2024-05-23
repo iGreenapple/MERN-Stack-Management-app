@@ -38,8 +38,6 @@ router.get('/:projectId', async (req: Request, res: Response) => {
 // CREATE PROJECT //
 // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
 router.post('/', async (req: Request, res: Response) => {
-  console.log(req.body);
-  
   try {
     const newProject = new Project({
       title: req.body.projectTitle,

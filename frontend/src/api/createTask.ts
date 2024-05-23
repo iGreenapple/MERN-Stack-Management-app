@@ -1,3 +1,4 @@
+import { TTask } from "../types/types";
 import { API_URL } from "./config";
 
 export async function createTask(projectId:string, taskTitle: string) {
@@ -12,9 +13,9 @@ export async function createTask(projectId:string, taskTitle: string) {
         projectId
       }),
     });
-    const data = await response.json();
-    console.log('New task created:', data);
-    return data;
+    const taskData :TTask = await response.json();
+    console.log('New task created:', taskData);
+    return taskData;
   }
   catch (error) {
     console.error('Error during task creation:', error);

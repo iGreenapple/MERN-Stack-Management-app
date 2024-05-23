@@ -6,6 +6,5 @@ export async function getProject(projectId : string): Promise<TProject> {
     method: 'GET'
   });
   const data = await response.json();
-  // console.log(data); // Zobrazí načtená data v konzoli (response.json nemůže být konzolována)
   return data;
 }
