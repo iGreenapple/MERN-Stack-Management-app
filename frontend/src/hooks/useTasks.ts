@@ -37,12 +37,12 @@ const useTasks = (projectId: string): UseTasksReturn => {
       }
     }
     fetchProject()
-  }, [])
+  }, [projectId])
 
-  const toggleModal = () => {
-    setOpenModal(!openModal);
-  };
+  // Manage modal
+  const toggleModal = () => {setOpenModal(!openModal)};
 
+  // Create task
   const handleCreateTask = async (title: string) => {
     try {
       const newTask = await createTask(projectId, title)
@@ -52,6 +52,7 @@ const useTasks = (projectId: string): UseTasksReturn => {
       setError(error instanceof Error ? error : new Error("Unknown error occurred"));
     }
   };
+  // Update task
   const handleUpdateTask = async (taskId: string, updates: Partial<TTask>) => {
     try {
       const updatedTask = await updateTask(taskId, updates);
@@ -61,6 +62,7 @@ const useTasks = (projectId: string): UseTasksReturn => {
       setError(error instanceof Error ? error : new Error("Unknown error occurred"));
     }
   };
+  // Delete task
   const handleDeleteTask = async (taskId: string) => {
     try {
       const deletedTask = await deleteTask(taskId);

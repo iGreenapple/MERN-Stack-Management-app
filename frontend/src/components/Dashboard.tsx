@@ -1,4 +1,4 @@
-import Project from './Project';
+import ProjectCard from './ProjectCard';
 import CreateModal from './CreateModal';
 
 import { TProject } from '../types/types';
@@ -23,7 +23,7 @@ const Dashboard = () => {
       <div className='flex flex-wrap justify-center gap-8 text-center'>
         {
           projects.map((project : TProject) => (
-            <Project 
+            <ProjectCard 
               key={project._id}
               project={project}
               deleteProjects={handleDeleteProject}

@@ -40,10 +40,16 @@ router.post('/', async (req: Request, res: Response) => {
 // UPDATE TASK
 router.put('/:taskId', async (req: Request, res: Response) => {
   try {
-    const { tadkId, taskTitle} = req.body;
+    const taskId = req.params.taskId;
+    const { title } = req.body;
 
-    const filter = {}
-    const update = {}
+    const filter = { _id: taskId};
+    const update = { title: title};
+    const updatedtask = await Task.findByIdAndUpdate(filter, update, { new : true})
+    if (!updatedtask) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    res.json(updatedtask);
   }
   catch (error) {
     res.status(500).json({ message: 'Error updating task', error });

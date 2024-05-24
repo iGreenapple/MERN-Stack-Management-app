@@ -10,9 +10,9 @@ import { RootLayout, Home, Dashboard, ProjectBoard} from './components';
 import About from './components/About.tsx';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faXmark, faCheckSquare, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faXmark, faCheckSquare, faPen)
+library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft)
 
 const router = createBrowserRouter(
   createRoutesFromElements(

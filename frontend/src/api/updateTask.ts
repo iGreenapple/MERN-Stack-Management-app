@@ -1,9 +1,9 @@
 import { TTask } from "../types/types";
 import { API_URL } from "./config";
 
-export async function updateTask(taskId:string, updates: Partial<TTask>): Promise<TTask> {
+export async function updateTask(taskId: string, updates: Partial<TTask>): Promise<TTask> {
   try {
-    const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+    const response = await fetch(`${API_URL}/task/${taskId}`, {
       method: 'PUT',
       headers: {
         "Content-Type": "application/json",

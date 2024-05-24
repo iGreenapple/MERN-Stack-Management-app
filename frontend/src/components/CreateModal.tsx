@@ -6,7 +6,6 @@ interface CreateModalProps {
 }
 
 const CreateModal: React.FC<CreateModalProps> = ( {open, setModal, handleCreateProject } ) => {
-
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 

@@ -4,6 +4,7 @@ import { TProject } from "../types/types";
 import { getProjects } from '../api/getProjects';
 import { createProject } from '../api/createProject';
 import { deleteProject } from '../api/deleteProject';
+import { updateProject } from "../api/updateProject";
 
 interface UseProjectsReturn {
   projects: TProject[];
@@ -11,6 +12,7 @@ interface UseProjectsReturn {
   openModal: boolean;
   toggleModal: () => void;
   handleCreateProject: (title: string, description: string) => Promise<void>;
+  handleUpdateProject: (projectId: string, updates: Partial<TProject>) => Promise<void>;
   handleDeleteProject: (projectId: string) => Promise<void>;
 }
 
@@ -48,6 +50,19 @@ const useProjects = (): UseProjectsReturn => {
     }
   };
 
+  // Funkce na update projektu:
+  const handleUpdateProject = async (projectId: string, updates: Partial<TProject>) => {
+    try {
+      const updatedProject = await updateProject(projectId, updates);
+      setProjects(prevProjects => 
+        prevProjects.map(project => 
+          project._id === projectId ? updatedProject : project));
+    } 
+    catch (error) {
+      setError(error instanceof Error ? error : new Error("Unknown error occurred"));
+    }
+  }
+
   // Funkce pro smazání projektu:
   const handleDeleteProject = async (projectId: string) => {
     try {
@@ -59,7 +74,7 @@ const useProjects = (): UseProjectsReturn => {
     }
   };
 
-  return { projects, error, openModal, toggleModal, handleCreateProject, handleDeleteProject };
+  return { projects, error, openModal, toggleModal, handleCreateProject, handleUpdateProject, handleDeleteProject };
 };
 
 export default useProjects

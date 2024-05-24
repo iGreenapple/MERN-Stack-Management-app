@@ -2,33 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { TProject, TUpdateProject } from '../types/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+interface UpdateModalProps {
+  openedProject: TProject;
+  open: boolean;
+  setModal: any;
+  handleUpdateProject: (projectId: string, updates: Partial<TProject>) => Promise<void>;
+}
 
-
-const UpdateModal: React.FC<{ actualProject:TProject | undefined; open: boolean;  setModal: any; handleUpdateProject: any;}> = ({actualProject, open, setModal, handleUpdateProject}) => {
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  useEffect(() => {
-    if (actualProject) {
-      setTitle(actualProject.title || '')
-      setDescription(actualProject.description || '')
-    }
-  }, [actualProject])
+const UpdateModal: React.FC<UpdateModalProps> = ({openedProject, open, setModal, handleUpdateProject}) => {
+  const [title, setTitle] = useState(openedProject.title);
+  const [description, setDescription] = useState(openedProject.description);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    setModal() // po submit zavřeme modal
     e.preventDefault();
-    const updatedProject : TUpdateProject = {
-      title: title,
-      description: description
+    try {
+      await handleUpdateProject(openedProject._id, {title, description})
+      openedProject.title = title;
+      openedProject.description = description;
+    } 
+    catch (error) {
+      console.error('Failed during form submit:', error)  
     }
-    
-    await handleUpdateProject(updatedProject)
-    
+    setModal();
   }
   
   if (!open) return null
+
   return (
     <div className='fixed top-1/2 left-1/2 -translate-x-[50%] -translate-y-1/2 bw-border bg-white z-10 xl:w-[25%] lg:w-[288px] h-auto p-10'>
       <button className='absolute w-8 h-8 top-2 right-2' onClick={setModal}>
@@ -41,10 +40,8 @@ const UpdateModal: React.FC<{ actualProject:TProject | undefined; open: boolean;
             type='text'
             id='project-title'
             value={title}
-            placeholder={title}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setTitle(event.target.value);
-            }}
+            // placeholder={title}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
           />
           <label htmlFor='project-description'>Project Description</label>
           <textarea
@@ -52,10 +49,8 @@ const UpdateModal: React.FC<{ actualProject:TProject | undefined; open: boolean;
             id='project-description'
             rows={9}
             value={description}
-            placeholder={description}
-            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setDescription(event.target.value);
-            }}
+            // placeholder={description}
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(event.target.value)}
           />
           <button>Update</button>
         </form>
