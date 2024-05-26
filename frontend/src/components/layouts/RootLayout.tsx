@@ -8,7 +8,7 @@ const RootLayout = () => {
         <NavBar />
       </header>
       <main className="bg-light w-[80%] h-full flex justify-center items-center">
-        {/* Do Outlet se vyrenderuje children route element, pokud v daném route tomu nějaký odpovídá*/}
+        {/* The children route element is rendered to the Outlet if there is a corresponding element in the route*/}
         <Outlet />  
       </main>
     </div>

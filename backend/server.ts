@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import path from 'path';
 
 // import project Router
 import projectRouter from './routes/projectRoutes';
@@ -22,7 +23,6 @@ app.use(express.json()); // bez toho nemůžeme přes request poslat JSON
 app.use('/project', projectRouter)
 // načítání task Router na příslušní route
 app.use("/task", taskRouter)
-
 
 // Připojení databáze MongoDB
 // Připojení k databázi → až po připojení databáze se spustí naslouchání na port 5000

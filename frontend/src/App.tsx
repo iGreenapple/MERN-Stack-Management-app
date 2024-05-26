@@ -5,6 +5,7 @@ import {
   Route
 } from "react-router-dom";
 
+
 import { RootLayout, Home, Dashboard, ProjectBoard} from './components';
 
 import About from './components/About.tsx';
@@ -16,12 +17,13 @@ library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft)
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<RootLayout />}>
-      <Route index element={<Home />} />
-      <Route path='dashboard' element={<Dashboard />} />
-      <Route path='project/:projectId' element={<ProjectBoard />} />
-      <Route path='about' element={<About />} />
-    </Route>
+      <Route path='/' element={<RootLayout />}>
+        <Route index element={<Home />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/project/:projectId' element={<ProjectBoard />} />
+        <Route path='/about' element={<About />} />
+      </Route>
+      
   )
 );
 

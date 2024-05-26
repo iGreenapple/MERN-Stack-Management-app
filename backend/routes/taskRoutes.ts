@@ -41,10 +41,10 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:taskId', async (req: Request, res: Response) => {
   try {
     const taskId = req.params.taskId;
-    const { title } = req.body;
+    const { title, stage } = req.body;
 
     const filter = { _id: taskId};
-    const update = { title: title};
+    const update = { title: title, stage: stage};
     const updatedtask = await Task.findByIdAndUpdate(filter, update, { new : true})
     if (!updatedtask) {
       return res.status(404).json({ message: 'Project not found' });

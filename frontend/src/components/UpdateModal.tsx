@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { TProject, TUpdateProject } from '../types/types';
+import React, { useState } from 'react'
+import { TProject } from '../types/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface UpdateModalProps {

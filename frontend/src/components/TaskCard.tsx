@@ -19,8 +19,30 @@ const TaskCard: React.FC<TaskCardProps> = ({task, updateTask, deleteTask}) => {
     // setTitle(title)
   };
 
+  const handleIncreaseStage = async () => {
+    console.log('increace');
+    
+    if (task.stage < 3) {
+      await updateTask(task._id, { stage: task.stage + 1 })
+    }
+  };
+  const handleDecreaseStage = async () => {
+    console.log('decreace');
+    if (task.stage > 1) {
+      await updateTask(task._id, { stage: task.stage - 1 })
+    }
+  };
+
   return (
-    <li key={task._id} className='relative bw-border bg-grey p-5 w-[300px] h-[100px] flex justify-center items-center'>
+    
+    <li key={task._id} className='relative bw-border bg-grey p-5 w-[300px] h-[125px] flex justify-center items-center gap-5'>
+      {task.stage > 1 ? (
+        <button className='flex-none' onClick={() => handleDecreaseStage()}>
+          <FontAwesomeIcon icon="chevron-left" size='xl' className='hover:text-[green]' />
+        </button>
+      ) : (
+        null
+      )}
       {isEditing ? (
         <input
           className='font-bold w-full bg-transparent' 
@@ -31,21 +53,15 @@ const TaskCard: React.FC<TaskCardProps> = ({task, updateTask, deleteTask}) => {
           autoFocus
         /> 
       ) : (
-        <p className='font-bold' onDoubleClick={() => setIsEditing(true)}>{task.title}</p>
+        <p className='font-bold mx-auto' onDoubleClick={() => setIsEditing(true)}>{task.title}</p>
       )}
-      {}
-      <button>
-        <FontAwesomeIcon icon="chevron-right" size='xl' />
-      </button>
-      <button>
-        <FontAwesomeIcon icon="chevron-left" size='xl' />
-      </button>
-      
-      
-
-      {/* <button className='absolute top-2 left-2' onClick={() => updateTask(task._id,{title})}>
-        <svg width="24" height="24" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13.0207 5.82839L15.8491 2.99996L20.7988 7.94971L17.9704 10.7781M13.0207 5.82839L3.41405 15.435C3.22652 15.6225 3.12116 15.8769 3.12116 16.1421V20.6776H7.65669C7.92191 20.6776 8.17626 20.5723 8.3638 20.3847L17.9704 10.7781M13.0207 5.82839L17.9704 10.7781" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/> </svg>
-      </button> */}
+      {task.stage < 3 ? (
+        <button className='flex-none' onClick={() => handleIncreaseStage()}>
+          <FontAwesomeIcon icon="chevron-right" size='xl' className='hover:text-[green]' />
+        </button>
+      ) : (
+        null
+      )}
       <button className='absolute w-6 h-6 top-1 right-1' onClick={() => deleteTask(task._id)}>
         <FontAwesomeIcon icon="xmark" size='xl' className='hover:text-[#ED6E6E]' />
       </button>

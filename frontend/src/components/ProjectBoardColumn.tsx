@@ -2,7 +2,6 @@ import React from 'react'
 import { TTask } from '../types/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Task from './TaskCard';
-import { updateTask } from '../api/updateTask';
 
 interface ProjectBoardColumnProps {
   tasks: TTask[] | undefined; 
@@ -24,6 +23,7 @@ const ProjectBoardColumn: React.FC<ProjectBoardColumnProps> = ({tasks, heading, 
       <h3 className='font-bold text-2xl'>{heading}</h3>
       {tasks?.map((task : TTask) =>
         <Task 
+          key={task._id}
           task={task}
           updateTask={updateTask}
           deleteTask={deleteTask}
