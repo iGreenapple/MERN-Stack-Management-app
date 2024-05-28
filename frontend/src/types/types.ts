@@ -12,6 +12,11 @@ export type TProject = {
   description: string
 };
 
+export type TUser = {
+  email: string,
+  password: string
+}
+
 export type TProjectResponse = {
   project: TProject,
   tasks: TTask[]
