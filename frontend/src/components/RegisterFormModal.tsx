@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { loginUser } from '../api/loginUser';
-import { TUser } from '../types/types';
+
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { registerUser } from '../api/registerUser';
 
 interface LoginFormModalProps {
   open: boolean,
   setModal: any,
 }
 
-const LoginFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
+const RegisterFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,18 +18,16 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log();
+    console.log('Registruju uživatele');
     
-    try {
-      console.log(email, password);
-      
-      const token = await loginUser(email, password);
-      localStorage.setItem('token', token);
-      navigate('/dashboard')
-    }
-    catch (error) {
-      console.error('Login failed', error);
-    }
+    // try {
+    //   const token = await registerUser(email, password);
+    //   localStorage.setItem('token', token.);
+    //   navigate('/dashboard')
+    // }
+    // catch (error) {
+    //   console.error('Login failed', error);
+    // }
   }
 
 
@@ -38,7 +37,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
       <button className='absolute w-8 h-8 top-2 right-2' onClick={setModal}>
         <FontAwesomeIcon icon="xmark" size='2xl'/>
       </button>
-      <h1>Log in</h1>
+      <h1>Sign up</h1>
       <form onSubmit={handleSubmit}>
         <label className='text-dark-500' htmlFor='user-email'>Email</label>
           <input
@@ -61,4 +60,4 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
 }
 
 
-export default LoginFormModal;
+export default RegisterFormModal;
