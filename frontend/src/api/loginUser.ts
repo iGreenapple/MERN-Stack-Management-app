@@ -1,6 +1,7 @@
+import { TUser } from "../types/types";
 import { API_URL } from "./config";
 
-export async function loginUser(email: string, password: string) {
+export async function loginUser(email: string, password: string): Promise<string> {
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
@@ -12,9 +13,9 @@ export async function loginUser(email: string, password: string) {
         password
       }),
     });
-    const userData = await response.json()
+    const userData: TUser = await response.json()
     console.log('User logged in:', userData);
-    return userData
+    return userData.token;
   }
   catch (error) {
     console.error('Error during user login:', error);

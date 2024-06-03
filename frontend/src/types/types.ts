@@ -14,7 +14,8 @@ export type TProject = {
 
 export type TUser = {
   email: string,
-  password: string
+  password: string,
+  token: string
 }
 
 export type TProjectResponse = {

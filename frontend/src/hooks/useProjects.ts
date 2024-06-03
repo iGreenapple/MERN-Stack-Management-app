@@ -29,7 +29,7 @@ const useProjects = (): UseProjectsReturn => {
         setProjects(loadedProjects);
       }
       catch (error) {
-        setError(error instanceof Error ? error : new Error("Unknown error occurred"));
+        setError("Failed to load projects");
       }
     };
     fetchProjects();

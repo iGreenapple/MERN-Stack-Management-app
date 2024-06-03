@@ -2,32 +2,46 @@ import {
   createBrowserRouter,
   RouterProvider,
   createRoutesFromElements,
-  Route
+  Route,
+  Navigate
 } from "react-router-dom";
 
-
-import { RootLayout, Home, Dashboard, ProjectBoard} from './components';
-
-import About from './components/About.tsx';
+import { RootLayout, Home, Dashboard, ProjectBoard, About } from './components';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft)
 
+const PrivateRoute = ({ element }: { element: React.ReactElement}) => {
+  const isAuthenticated = !!localStorage.getItem('token');
+  return isAuthenticated ? element : <Navigate to='/' />;
+}
+
+// const token = localStorage.getItem('token')
+//   console.log(token);
+
 const router = createBrowserRouter(
   createRoutesFromElements(
       <Route path='/' element={<RootLayout />}>
         <Route index element={<Home />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/project/:projectId' element={<ProjectBoard />} />
+        <Route 
+          path='/dashboard' 
+          element={<PrivateRoute element={<Dashboard />}/>}
+        />
+        <Route 
+          path='/project/:projectId'
+          element={<PrivateRoute element={<ProjectBoard />}/>} 
+        />
         <Route path='/about' element={<About />} />
       </Route>
-      
   )
 );
 
-function App() {
+
+
+const App = () => {
+  
   return (
     <RouterProvider router={router} />
   )

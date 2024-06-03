@@ -1,7 +1,7 @@
 import { TUser } from "../types/types";
 import { API_URL } from "./config";
 
-export async function registerUser(email: string, password: string) {
+export async function registerUser(email: string, password: string): Promise<string> {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
@@ -15,7 +15,7 @@ export async function registerUser(email: string, password: string) {
     });
     const userData : TUser = await response.json()
     console.log('User registered:', userData);
-    return userData
+    return userData.token;
   }
   catch (error) {
     console.error('Error during user registration:', error);

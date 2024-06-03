@@ -8,11 +8,13 @@ import { registerUser } from '../api/registerUser';
 interface LoginFormModalProps {
   open: boolean,
   setModal: any,
+  setLoginModal: any,
 }
 
-const RegisterFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
+const RegisterFormModal: React.FC<LoginFormModalProps> = ({open, setModal, setLoginModal}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -20,16 +22,15 @@ const RegisterFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
     e.preventDefault();
     console.log('Registruju uživatele');
     
-    // try {
-    //   const token = await registerUser(email, password);
-    //   localStorage.setItem('token', token.);
-    //   navigate('/dashboard')
-    // }
-    // catch (error) {
-    //   console.error('Login failed', error);
-    // }
+    try {
+      await registerUser(email, password);
+      setModal();
+      setLoginModal();
+    }
+    catch (error) {
+      console.error('Registration failed', error);
+    }
   }
-
 
   if (!open) return null
   return (
@@ -37,27 +38,32 @@ const RegisterFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
       <button className='absolute w-8 h-8 top-2 right-2' onClick={setModal}>
         <FontAwesomeIcon icon="xmark" size='2xl'/>
       </button>
-      <h1>Sign up</h1>
-      <form onSubmit={handleSubmit}>
+      <h1 className='font-bold text-2xl text-center'>Register</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <form className='flex flex-col items-center gap-3' onSubmit={handleSubmit}>
         <label className='text-dark-500' htmlFor='user-email'>Email</label>
           <input
             className='p-2.5 w-full bg-grey border-navy rounded-xl text-sm text-black font-bold'
-            type='text'
+            type='email'
             id='user-email'
             value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <label className='text-dark-500' htmlFor='user-password'>Password</label>
           <input
             className='p-2.5 w-full bg-grey border-navy rounded-xl text-sm text-black font-bold'
-            type='text'
+            type='password'
             id='user-password'
-            value={email}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
+          <button className='border' type="submit">Registrovat</button>
       </form>
     </div>
   )
 
 }
-
 
 export default RegisterFormModal;

@@ -6,8 +6,11 @@ const projectSchema : Schema = new Schema({
   description: String,
   created: Date,
   updated: Date,
-  // Druhá možnost - vytvoření array tasks přímo v projektu
-  // tasks: [taskSchema]
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 });
 
 const Project = mongoose.model('Project', projectSchema);

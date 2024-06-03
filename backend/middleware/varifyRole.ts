@@ -1,0 +1,1 @@
+// po přidání atributu role pro uživatele zde bude middleware fce na verifikaci role a vracení náležitých errorů

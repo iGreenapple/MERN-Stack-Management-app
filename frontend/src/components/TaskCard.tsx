@@ -20,21 +20,17 @@ const TaskCard: React.FC<TaskCardProps> = ({task, updateTask, deleteTask}) => {
   };
 
   const handleIncreaseStage = async () => {
-    console.log('increace');
-    
     if (task.stage < 3) {
       await updateTask(task._id, { stage: task.stage + 1 })
     }
   };
   const handleDecreaseStage = async () => {
-    console.log('decreace');
     if (task.stage > 1) {
       await updateTask(task._id, { stage: task.stage - 1 })
     }
   };
 
   return (
-    
     <li key={task._id} className='relative bw-border bg-grey p-5 w-[300px] h-[125px] flex justify-center items-center gap-5'>
       {task.stage > 1 ? (
         <button className='flex-none' onClick={() => handleDecreaseStage()}>

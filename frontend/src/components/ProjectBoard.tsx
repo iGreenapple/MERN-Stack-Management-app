@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import UpdateModal from './UpdateModal';
 import ProjectBoardColumn from './ProjectBoardColumn';
@@ -19,6 +19,8 @@ const ProjectBoard = () => {
   const { handleUpdateProject } = useProjects()
   
   const [addedTask, setAddedTask] = useState('');
+
+  const navigate = useNavigate();
   
   // const [isLoading, setIsLoading] = useState(false) // useState zajišťující, že se komponenta načte až se načtou i data (stával se takový chvilkový tik, kdy některé elementy byli prázdné)
 
@@ -41,8 +43,10 @@ const ProjectBoard = () => {
   } 
   return (
     <div className='relative bw-border w-full h-[80%] p-10 flex flex-col gap-5 overflow-auto'>
+      <button onClick={() => navigate('/dashboard')}>Back</button>
       <div className='flex justify-between items-center'>
         <h1 className='font-bold text-3xl mb-5'>{project.title}</h1>
+        
         <button onClick={toggleModal}>
           <svg width="24" height="24" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M13.0207 5.82839L15.8491 2.99996L20.7988 7.94971L17.9704 10.7781M13.0207 5.82839L3.41405 15.435C3.22652 15.6225 3.12116 15.8769 3.12116 16.1421V20.6776H7.65669C7.92191 20.6776 8.17626 20.5723 8.3638 20.3847L17.9704 10.7781M13.0207 5.82839L17.9704 10.7781" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/> </svg>
         </button>
