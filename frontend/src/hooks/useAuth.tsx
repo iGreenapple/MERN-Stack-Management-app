@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from "../api/loginUser";
 import { logoutUser } from "../api/logoutUser";
 
-
 interface UseUserReturn {
   isAuthenticated: boolean;
   openLoginModal: boolean;

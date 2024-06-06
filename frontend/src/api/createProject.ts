@@ -2,7 +2,7 @@ import { TProject } from "../types/types";
 import { API_URL } from "./config";
 
 // Pro přehlednost kódu přesuneme fetch pro vytvoření projektu do samostatné složky/funkce (DŮLEŽITÉ - nadefinovat input a return funkce, tak aby to sedělo v navazujícím kódu)
-export async function createProject(projectTitle: string, projectDescription: string): Promise<TProject> {
+export async function createProject(projectTitle: string, projectDescription: string, projectUserId: string): Promise<TProject> {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
@@ -17,7 +17,8 @@ export async function createProject(projectTitle: string, projectDescription: st
       },
       body: JSON.stringify({
         projectTitle,
-        projectDescription
+        projectDescription,
+        projectUserId
       }),
     });
     const projectData : TProject = await response.json()

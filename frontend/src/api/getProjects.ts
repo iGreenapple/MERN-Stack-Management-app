@@ -1,6 +1,6 @@
 import { API_URL } from "./config";
 
-export async function getProjects() {
+export async function getProjects(userId: string) {
   const token = localStorage.getItem('token');
 
   if (!token) {
@@ -9,12 +9,15 @@ export async function getProjects() {
   }
   
   try {
-    const response = await fetch(`${API_URL}/project`, {
+    // const params = new URLSearchParams({ userId })
+
+    const response = await fetch(`${API_URL}/project?userId=${userId}`, {
       method: 'GET',
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
-      }
+      },
+      
     });
 
     if (response.status === 401) {

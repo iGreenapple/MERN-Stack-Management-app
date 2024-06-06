@@ -3,11 +3,14 @@ import CreateModal from './CreateModal';
 
 import { TProject } from '../types/types';
 
+import { useUser } from '../context/UserContext';
 import useProjects from '../hooks/useProjects';
 
 const Dashboard = () => {
+  const { userId } = useUser();
+
   // použité useState a handlery načítáme z vlastního hooku useProjects
-  const { projects, openModal, toggleModal, handleCreateProject, handleDeleteProject } = useProjects();
+  const { projects, openModal, toggleModal, handleCreateProject, handleDeleteProject } = useProjects(userId || '');
 
   return (
     <div className="relative w-screen h-full flex flex-auto flex-col items-center justify-evenly gap-5">

@@ -6,7 +6,8 @@ import { Task } from '../models/taskModel';
 export const getAllProjects = async (req: Request, res: Response) => {
   // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
   try {
-    const projects = await Project.find();
+    const { userId } = req.query;
+    const projects = await Project.find({ userId: userId });
     res.json(projects)  
   }
   catch (error) {
@@ -33,10 +34,14 @@ export const getOneProject = async (req: Request, res: Response) => {
 // CREATE PROJECT
 export const createProject = async (req: Request, res: Response) => {
   try {
+    const { projectTitle, projectDescription, projectUserId } = req.body
     const newProject = new Project({
-      title: req.body.projectTitle,
-      description: req.body.projectDescription
+      title: projectTitle,
+      description: projectDescription,
+      userId: projectUserId
     });
+    console.log(newProject);
+    
     //  Použití await znamená, že se kód zastaví a bude čekat na dokončení této operace.
     const createProject = await newProject.save();
     res.json(createProject)

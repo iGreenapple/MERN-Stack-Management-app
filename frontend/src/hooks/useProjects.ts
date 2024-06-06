@@ -16,8 +16,9 @@ interface UseProjectsReturn {
   handleDeleteProject: (projectId: string) => Promise<void>;
 }
 
-const useProjects = (): UseProjectsReturn => {
-  
+// do hooku přidáme optional parameter userId (optional pro komponenty, kdy sice hook voláme, ale nevyužíváme např. handleCreateProject)
+const useProjects = (userId?: string): UseProjectsReturn => {
+
   const [projects, setProjects] = useState<TProject[]>([]);
   const [error, setError] = useState<Error | string | null>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -25,7 +26,7 @@ const useProjects = (): UseProjectsReturn => {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const loadedProjects = await getProjects();
+        const loadedProjects = await getProjects(userId as string);
         setProjects(loadedProjects);
       }
       catch (error) {
@@ -42,7 +43,7 @@ const useProjects = (): UseProjectsReturn => {
   // Funkce pro přidání projektu:
   const handleCreateProject = async (title: string, description: string) => {
     try {
-      const newProject : TProject = await createProject(title, description);
+      const newProject : TProject = await createProject(title, description, userId as string);
       setProjects(prevProjects => [...prevProjects, newProject]);
     }
     catch (error) {

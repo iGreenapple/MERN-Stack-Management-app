@@ -55,7 +55,7 @@ const loginUser = async (req: Request, res: Response) => {
     const token = user.generateAccessJWT()
     // res.cookie("SessionID", token, options)
 
-    res.status(200).json({ token })
+    res.status(200).json({ token, userId: user._id})
   } 
   catch (error) {
     res.status(500).json({ message: 'Internal server error', error });

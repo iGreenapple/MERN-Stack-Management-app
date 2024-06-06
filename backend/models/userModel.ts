@@ -15,7 +15,12 @@ interface IUser {
 }
 
 const userSchema: Schema = new Schema({
-  email: {},
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true
+  },
   password:{}
 });
 
@@ -31,7 +36,7 @@ userSchema.methods.generateAccessJWT = function (): string {
   const payload = {
     userId: this._id.toString()
   };
-  return jwt.sign(payload, secretKey, { expiresIn: '1m' });
+  return jwt.sign(payload, secretKey, { expiresIn: '30m' });
 }
 
 export const User = mongoose.model<IUser>("User", userSchema)

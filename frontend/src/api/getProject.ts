@@ -1,7 +1,7 @@
 import { TProjectResponse } from "../types/types";
 import { API_URL } from "./config";
 
-export async function getProject(projectId : string): Promise<TProjectResponse> {
+export async function getProject(projectId : string | null): Promise<TProjectResponse> {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { loginUser } from '../api/loginUser';
-import { TUser } from '../types/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useUser } from '../context/UserContext';
 
 interface LoginFormModalProps {
   open: boolean,
@@ -14,16 +14,15 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({open, setModal}) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const { setUserId } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     try {
-      console.log(email, password);
-      
-      const token = await loginUser(email, password);
-      localStorage.setItem('token', token);
+      await loginUser(email, password);
+      const userId = localStorage.getItem('userId')
+      setUserId(userId as string)
       navigate('/dashboard')
     }
     catch (error) {

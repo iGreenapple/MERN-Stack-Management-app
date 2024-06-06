@@ -15,7 +15,8 @@ const ProjectBoard = () => {
   // Typescript totiž předpokládá, že z useParams můžeme dostat string nebo nic (undefined)
   // více přístupů na https://bobbyhadz.com/blog/typescript-argument-type-undefined-not-assignable-parameter-type-string
   const openedProjectId = projectId !== undefined ? projectId : ""
-  const { tasks, project, openModal, toggleModal, handleCreateTask, handleUpdateTask, handleDeleteTask } = useTasks(openedProjectId)
+  const { tasks, project, openModal, toggleModal, handleCreateTask, handleUpdateTask, handleDeleteTask } = useTasks(openedProjectId);
+
   const { handleUpdateProject } = useProjects()
   
   const [addedTask, setAddedTask] = useState('');
@@ -23,7 +24,6 @@ const ProjectBoard = () => {
   const navigate = useNavigate();
   
   // const [isLoading, setIsLoading] = useState(false) // useState zajišťující, že se komponenta načte až se načtou i data (stával se takový chvilkový tik, kdy některé elementy byli prázdné)
-
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
