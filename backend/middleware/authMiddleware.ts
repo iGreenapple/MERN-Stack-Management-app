@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const secretKey = process.env.JWT_SECRET;
 
