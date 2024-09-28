@@ -16,6 +16,7 @@ export type TUser = {
   _id: string,
   email: string,
   password: string,
+  name: string
   token: string
 }
 
