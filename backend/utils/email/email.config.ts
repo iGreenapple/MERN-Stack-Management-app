@@ -7,6 +7,7 @@ if (!apiToken) {
 
 export const mailtrapClient = new MailtrapClient({
   token: apiToken,
+  testInboxId: 3135449,
 });
 
 export const sender = {

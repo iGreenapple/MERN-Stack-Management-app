@@ -14,19 +14,23 @@ import { setCookie } from "../utils/setCookie";
 const saltRounds = 10;
 
 const registerUser = async (req: Request, res: Response) => {
+  console.log(req.body);
+  
   const { email, password, name } = req.body;
+  console.log(email);
+  
 
   try {
     if (!email || !password || !name) {
-      throw new Error("All field are required");
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "This email already exists" });
+      return res.status(400).json({ success: false, message: "This email already exists" });
     }
     // hashování hesla
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    // vytvoření varifikačního kódu
+    // Generování varifikačního kódu
     const generatedVerificationToken = "123456";
     // const generatedVerificationToken = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -39,20 +43,23 @@ const registerUser = async (req: Request, res: Response) => {
     });
 
     await user.save();
-    // zamezení aby jsme v Response odeslali i heslo - konflikt s hash funkcí
-    // Zabránení konfliktu v pojmenování promenných → password: _ → tímto přejmenováváme proměnou na podtržítko, což
-    const { password: _, ...user_data } = user;
 
+    // Generování JWT tokenu → skrze custom metodu modelu User
     const token = user.generateAccessJWT();
     setCookie(res, token);
 
+    // zaslání ověřovacího emailu → ÚKOL - možná dobré přidat return se zpětnou vazbou  
     await sendVerificationEmail(user.email, generatedVerificationToken);
 
-    res.status(201).json({ success: true, message: "User created successfully", user_data });
+    // zamezení aby jsme v Response odeslali i heslo - konflikt s hash funkcí
+    // Zabránení konfliktu v pojmenování promenných → password: _ → tímto přejmenováváme proměnou na podtržítko, což
+    const { password: _, ...userData } = user;
+    return res.status(201).json({ success: true, message: "User created successfully", userData });
+
   } catch (error) {
     if (error instanceof Error) {
-      console.log("Error in registerUser", error);
-      res.status(400).json({ success: false, message: error.message });
+      console.error("Error in registerUser", error);
+      return res.status(400).json({ success: false, message: error.message });
     }
   }
 };
@@ -113,7 +120,8 @@ const loginUser = async (req: Request, res: Response) => {
     // set cookie skrze externí funkci. Posíláme response a token
     setCookie(res, token);
 
-    res.status(200).json({ token, userId: user._id });
+    const { password: _, ...userData } = user;
+    return res.status(201).json({ success: true, message: "User log in successfully", userData });
   } catch (error) {
     if (error instanceof Error) {
       console.log("Error in loginUser ", error);

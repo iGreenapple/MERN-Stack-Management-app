@@ -33,7 +33,7 @@ const CreateModal: React.FC<CreateModalProps> = ( {open, setModal, handleCreateP
       <form onSubmit={handleFormSubmit} className='flex flex-col items-center gap-3 '>
           <label className='text-dark-500' htmlFor='project-title'>Project Title</label>
           <input
-            className='p-2.5 w-full bg-grey border-navy rounded-xl text-sm text-black font-bold'
+            className='p-2.5 w-full bg-light border-navy rounded-xl text-sm text-black font-bold'
             type='text'
             id='project-title'
             value={title}
@@ -45,7 +45,7 @@ const CreateModal: React.FC<CreateModalProps> = ( {open, setModal, handleCreateP
           />
           <label htmlFor='project-description'>Project Description</label>
           <textarea
-            className='p-2.5 w-full bg-grey border-black rounded-xl text-sm text-black font-bold'
+            className='p-2.5 w-full bg-light border-black rounded-xl text-sm text-black font-bold'
             id='project-description'
             rows={9}
             value={description}

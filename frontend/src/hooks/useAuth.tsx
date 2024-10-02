@@ -1,47 +1,66 @@
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { createContext, useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/loginUser";
 import { logoutUser } from "../api/logoutUser";
 
-interface UseUserReturn {
+// import { useAuth } from "../context/authContext";
+
+
+
+interface UseAuthReturn {
   isAuthenticated: boolean;
   openLoginModal: boolean;
   openRegisterModal: boolean;
   toggleLoginModal: () => void;
   toggleRegisterModal: () => void;
-  handleLogin: (email: string, password: string) => Promise<void>;
+  handleSignup: (email: string, password: string, name: string) => Promise<any>;
+  handleLogin: (email: string, password: string) => Promise<any>;
   handleLogout: () => void;
 }
 
-const useAuth = (): UseUserReturn => {
+const useAuth = (): UseAuthReturn => {
+  const navigate = useNavigate();
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [openLoginModal, setLoginModal] = useState(false);
   const [openRegisterModal, setregisterModal] = useState(false);
-  const navigate = useNavigate();
 
   const toggleLoginModal = () => {
-    setLoginModal(!openLoginModal)
+    setLoginModal(!openLoginModal);
   };
   const toggleRegisterModal = () => {
-    setregisterModal(!openRegisterModal)
+    setregisterModal(!openRegisterModal);
   };
 
+  const handleSignup = async (email: string, password: string, name:string) => {
+
+  }
+
   const handleLogin = async (email: string, password: string) => {
-    const user = await loginUser(email, password)
+    const user = await loginUser(email, password);
     if (user) {
       setIsAuthenticated(true);
       toggleLoginModal();
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
-  }
+  };
 
   const handleLogout = () => {
     logoutUser();
     setIsAuthenticated(false);
-    navigate('/');
+    navigate("/");
   };
 
-  return { isAuthenticated, openLoginModal, openRegisterModal, toggleLoginModal, toggleRegisterModal, handleLogin, handleLogout }
-}
+  return {
+    isAuthenticated,
+    openLoginModal,
+    openRegisterModal,
+    toggleLoginModal,
+    toggleRegisterModal,
+    handleSignup,
+    handleLogin,
+    handleLogout,
+  };
+};
 
-export default useAuth
+export default useAuth;

@@ -1,3 +1,5 @@
+// REDUCER + CONTEXT → pro správu dat uživatele po jeho přihlášení 
+
 import React, {  ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 interface UserContextType {

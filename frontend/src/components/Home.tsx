@@ -1,44 +1,39 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-import LoginFormModal from "./LoginFormModal";
-import RegisterFormModal from "./RegisterFormModal";
-
-import useAuth from "../hooks/useAuth";
+import AuthModalForm from "./AuthModalForm";
+import Button from "./1_atoms/Button";
+import { AuthProvider } from "../contexts/AuthContext";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { openLoginModal, openRegisterModal, toggleLoginModal, toggleRegisterModal } = useAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<"login" | "signup" | null>(null);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const handleOpenModal = (type: "login" | "signup") => {
+    setModalType(type);
+    setIsAuthModalOpen(true);
+  };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard')
-    }
-  }, [isAuthenticated, navigate]);
-
-  // const handleLogin = () => {
-  //   setIsAuthenticated(true);
-  //   toggleLoginModal();
-  // };
-
-  // const handleLogout = () => {
-  //   setIsAuthenticated(false);
-  //   localStorage.removeItem('token');
-  // };
+  const handleCloseModal = () => {
+    setIsAuthModalOpen(false);
+    setModalType(null);
+  };
 
   return (
-    <div className='flex flex-col gap-10 items-center'>
-      <h1 className='home-heading mx-5'>Welcome to the Project management App</h1>
-      <LoginFormModal open={openLoginModal} setModal={toggleLoginModal} />
-      <RegisterFormModal open={openRegisterModal} setModal={toggleRegisterModal} setLoginModal={toggleLoginModal} />
-      <div className='flex gap-5'>
-        <button onClick={toggleRegisterModal}>Register</button>
-        <button onClick={toggleLoginModal}>Log In</button>
+    <div className="flex flex-col gap-10 items-center">
+      <h1 className="home-heading mx-5">Welcome to the Project management App</h1>
+      <div className="px-40 w-full flex gap-5">
+        <Button type="button" onClick={() => handleOpenModal("signup")}>
+          Sign up
+        </Button>
+        <Button type="button" onClick={() => handleOpenModal("login")}>
+          Login
+        </Button>
       </div>
+      <AuthProvider>
+        <AuthModalForm type={modalType} isOpen={isAuthModalOpen} onClose={handleCloseModal} />
+      </AuthProvider>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

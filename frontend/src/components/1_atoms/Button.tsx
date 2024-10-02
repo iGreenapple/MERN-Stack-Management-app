@@ -1,10 +1,6 @@
 import React, { ReactNode } from "react";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  type: "button" | "submit";
-  children?: ReactNode;
-  onClick?: () => void;
-}
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const Button: React.FC<ButtonProps> = ({ type, children, onClick, className, ...rest }) => {
   return (
