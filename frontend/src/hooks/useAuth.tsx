@@ -1,11 +1,9 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api/loginUser";
+import { loginUserApi } from "../api/loginUser";
 import { logoutUser } from "../api/logoutUser";
 
 // import { useAuth } from "../context/authContext";
-
-
 
 interface UseAuthReturn {
   isAuthenticated: boolean;
@@ -32,12 +30,10 @@ const useAuth = (): UseAuthReturn => {
     setregisterModal(!openRegisterModal);
   };
 
-  const handleSignup = async (email: string, password: string, name:string) => {
-
-  }
+  const handleSignup = async (email: string, password: string, name: string) => {};
 
   const handleLogin = async (email: string, password: string) => {
-    const user = await loginUser(email, password);
+    const user = await loginUserApi(email, password);
     if (user) {
       setIsAuthenticated(true);
       toggleLoginModal();

@@ -1,26 +1,18 @@
 import { API_URL } from "./config";
 
-export async function getProjects(userId: string) {
+export async function getProjects() {
   try {
-    const response = await fetch(`${API_URL}/project`, {
+    const response = await fetch(`${API_URL}/api/project`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include", // Sends cookies with request
     });
+    console.log(response);
     if (!response.ok) {
-      console.log(response);
       throw new Error("Failed to fetch projects");
     }
-
-
-    if (response.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/";
-      throw new Error("Unauthorized");
-    }
-    
 
     // z fetch dostáváme Response, kterou musíme ještě převést na objekt
     const data = await response.json(); // převedení na objekt z fetch funkce

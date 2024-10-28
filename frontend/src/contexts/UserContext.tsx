@@ -1,41 +1,44 @@
-// REDUCER + CONTEXT → pro správu dat uživatele po jeho přihlášení 
+// REDUCER + CONTEXT → pro správu dat uživatele po jeho přihlášení
 
-import React, {  ReactNode, createContext, useContext, useEffect, useState } from "react";
+import React, { Dispatch, ReactNode, createContext, useReducer } from "react";
 
-interface UserContextType {
+export interface UserState {
   userId: string | null;
-  setUserId: (id:string) => void;
+  email: string | null;
+  name: string | null;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export interface UserAction {
+  type: "SET_USER" | "LOGOUT";
+  payload?: UserState;
+}
 
-const UserProvider: React.FC<{ children: ReactNode }> = ({children}) => {
-  const [userId, setUserId] = useState<string | null>(() => {
-    return localStorage.getItem('userId');
-  });
-
-  useEffect(() => {
-    if (userId) {
-      localStorage.setItem('userId', userId);
-    }
-    else {
-      localStorage.removeItem('userId');
-    }
-  }, [userId]);
-
-  return (
-    <UserContext.Provider value={{userId, setUserId}}>
-      {children}
-    </UserContext.Provider>
-  );
+const initialUserState: UserState = {
+  userId: null,
+  name: null,
+  email: null,
 };
 
-const useUser = (): UserContextType => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+const userReducer = (state: UserState, action: UserAction): UserState => {
+  switch (action.type) {
+    case "SET_USER":
+      return { ...state, ...action.payload };
+    case "LOGOUT":
+      return initialUserState;
+    default:
+      return state;
   }
-  return context
+};
+
+interface UserContextType {
+  state: UserState;
+  dispatch: Dispatch<UserAction>;
 }
 
-export { UserProvider, useUser };
+export const UserContext = createContext<UserContextType | undefined>(undefined);
+
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [state, dispatch] = useReducer(userReducer, initialUserState);
+
+  return <UserContext.Provider value={{ state, dispatch }}>{children}</UserContext.Provider>;
+};

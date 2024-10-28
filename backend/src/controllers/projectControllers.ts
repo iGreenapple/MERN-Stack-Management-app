@@ -3,14 +3,16 @@ import { Project } from "../models/projectModel";
 import { Task } from "../models/taskModel";
 import { JwtPayload } from "jsonwebtoken";
 
-// GET PROJECTS
+// GET ALL PROJECTS
 export const getAllProjects = async (req: Request, res: Response) => {
   // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
   try {
+    // vytažení objektu userToken, který jsme uložili do request v authMiddleware 
     const userDecodedToken = req.userToken;
     if (!userDecodedToken) {
       return res.status(401).json({ success: false, message: "User not authenticated" });
     }
+    // vytažení pouze userId
     const { userId } = userDecodedToken;
 
     const projects = await Project.find({ userId: userId });

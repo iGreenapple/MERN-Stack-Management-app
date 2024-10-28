@@ -17,7 +17,7 @@ app.use(express.json()); // toto nám dovoluje parsovat příchozí request req.
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
-app.use("/project", projectRouter);
+app.use("/api/project", projectRouter);
 app.use("/task", taskRouter);
 
 const PORT = process.env.PORT || 5000;

@@ -5,7 +5,7 @@ const secretKey = process.env.JWT_SECRET; // Skrytý klíč pro ověření
 if (!secretKey) {
   throw new Error("JWT_SECRET is not defined in the environment variables");
 }
-
+// middleware funkce pro kontrolu tokenu a extrahování userId
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // vytahujeme z request cookie token pro validaci 
   const token = req.cookies.token;

@@ -101,13 +101,18 @@ const verifyEmail = async (req: Request, res: Response) => {
 };
 
 const loginUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  // použito lepší názvoslový pro oddělení emailu a passwordu z body a z DB
+  console.log(req.body);
+  
+  const { userEmail, userPassword } = req.body;
   try {
-    const user = await User.findOne({ email });
+    // kontrola zda email existuje v DB - musíme specifikovat, že hledáme email (tak je to nazvané v DB)
+    const user = await User.findOne({ email: userEmail });
     if (!user) {
       return res.status(400).json({ success: false, message: "Invalid credentials" });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    // kontrola zda se heslo shoduje
+    const isPasswordValid = await bcrypt.compare(userPassword, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ success: false, message: "Invalid credentials" });
     }
@@ -118,8 +123,11 @@ const loginUser = async (req: Request, res: Response) => {
     // set cookie skrze externí funkci. Posíláme response a token
     setCookie(res, token);
 
-    const { password: _, ...userData } = user;
-    return res.status(201).json({ success: true, message: "User log in successfully", userData });
+    // vytvoření objektu s vybranými user daty k odeslání v response - :_ je nutné kvůli oddělení tohoto emailu od předem použité proměnné
+    const { _id, email, name } = user;
+    // const { password: _, ...userData } = user;
+
+    return res.status(200).json({ success: true, message: "User log in successfully", userData: { _id, email, name } });
   } catch (error) {
     if (error instanceof Error) {
       console.log("Error in loginUser ", error);

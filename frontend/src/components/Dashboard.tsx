@@ -1,19 +1,29 @@
+import { useContext } from "react";
+
 import ProjectCard from "./ProjectCard";
 import CreateModal from "./CreateModal";
 
 import { TProject } from "../types/types";
 
-import { useUser } from "../contexts/UserContext";
 import useProjects from "../hooks/useProjects";
 
+import { UserContext } from "../contexts/UserContext";
+
 const Dashboard = () => {
-  const { userId } = useUser();
+  // Načítaní uživatelských dat z userContext
+  const userContext = useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext must be used within a UserProvider");
+  }
+  const { userId, email, name } = userContext.state;
 
   // použité useState a handlery načítáme z vlastního hooku useProjects
   const { projects, openModal, toggleModal, handleCreateProject, handleDeleteProject } = useProjects(userId || "");
 
   return (
     <div className="relative w-screen h-full flex flex-auto flex-col items-center justify-evenly gap-5">
+      <h1>Username: {name}</h1>
+      <p>Email: {email}</p>
       <button
         className="absolute p-2 top-5 right-5 text-lg border-black border-2 rounded-full"
         onClick={toggleModal} // Použijeme toggleModal místo přímého nastavení stavu
