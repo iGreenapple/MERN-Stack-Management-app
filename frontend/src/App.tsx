@@ -10,17 +10,17 @@ import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from "@fortawes
 
 library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft);
 
-const PrivateRoute = ({ element }: { element: React.ReactElement }) => {
-  const isAuthenticated = !!localStorage.getItem("token");
-  return isAuthenticated ? element : <Navigate to="/" />;
-};
+// const PrivateRoute = ({ element }: { element: React.ReactElement }) => {
+//   const isAuthenticated = !!localStorage.getItem("token");
+//   return isAuthenticated ? element : <Navigate to="/" />;
+// };
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-      <Route path="/project/:projectId" element={<PrivateRoute element={<ProjectBoard />} />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/project/:projectId" element={<ProjectBoard />}  />
       <Route path="/about" element={<About />} />
     </Route>
   )

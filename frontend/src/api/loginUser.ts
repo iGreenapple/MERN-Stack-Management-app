@@ -7,6 +7,7 @@ export const loginUser = async(email: string, password: string): Promise<{ succe
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include', // Sends cookies with request
       body: JSON.stringify({ email, password }),
     });
 
@@ -20,6 +21,9 @@ export const loginUser = async(email: string, password: string): Promise<{ succe
     // return userId;
   } catch (error) {
     console.error("Error during user login:", error);
-    throw error;
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "An unknown error occurred during user login",
+    };
   }
 };

@@ -15,10 +15,9 @@ const saltRounds = 10;
 
 const registerUser = async (req: Request, res: Response) => {
   console.log(req.body);
-  
+
   const { email, password, name } = req.body;
   console.log(email);
-  
 
   try {
     if (!email || !password || !name) {
@@ -48,14 +47,13 @@ const registerUser = async (req: Request, res: Response) => {
     const token = user.generateAccessJWT();
     setCookie(res, token);
 
-    // zaslání ověřovacího emailu → ÚKOL - možná dobré přidat return se zpětnou vazbou  
+    // zaslání ověřovacího emailu → ÚKOL - možná dobré přidat return se zpětnou vazbou
     await sendVerificationEmail(user.email, generatedVerificationToken);
 
     // zamezení aby jsme v Response odeslali i heslo - konflikt s hash funkcí
     // Zabránení konfliktu v pojmenování promenných → password: _ → tímto přejmenováváme proměnou na podtržítko, což
     const { password: _, ...userData } = user;
     return res.status(201).json({ success: true, message: "User created successfully", userData });
-
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error in registerUser", error);

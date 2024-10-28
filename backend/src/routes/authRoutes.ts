@@ -16,10 +16,7 @@ const router = express.Router();
 // Registration of user
 router.post(
   "/register",
-  check("email")
-    .isEmail()
-    .withMessage("Enter a valid email address")
-    .normalizeEmail(),
+  check("email").isEmail().withMessage("Enter a valid email address").normalizeEmail(),
   check("password")
     .notEmpty()
     .isLength({ min: 8 }) // možná to nedává smysl, když máme hash hesla definovaný v controllers a ne v modelu
@@ -32,10 +29,7 @@ router.post(
 // Login of user
 router.post(
   "/login",
-  check("email")
-    .isEmail()
-    .withMessage("Enter a valid email address")
-    .normalizeEmail(),
+  check("email").isEmail().withMessage("Enter a valid email address").normalizeEmail(),
   check("password").not().isEmpty(),
   loginUser
 );
@@ -47,9 +41,8 @@ router.post("/logout", logoutUser);
 router.post("/verify-email", verifyEmail);
 
 // Forgot password
-router.post("/forgot-password", forgotPassword)
+router.post("/forgot-password", forgotPassword);
 // Reset password
-router.post("/reset-password/:token", resetPassword)
-
+router.post("/reset-password/:token", resetPassword);
 
 export default router;

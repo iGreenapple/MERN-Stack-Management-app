@@ -35,7 +35,7 @@ export const signupUser = async(
     console.error("Error during user registration:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "An unknown error occurred",
+      message: error instanceof Error ? error.message : "An unknown error occurred during user signup",
     };
   }
 }

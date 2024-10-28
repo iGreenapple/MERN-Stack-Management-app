@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "cd backend/ && nodemon --watch \"**\" --ext \"ts, json\" --exec \" ts-node server.ts\"",
+    "server": "cd backend/src && nodemon --watch \"**\" --ext \"ts, json\" --exec \" ts-node server.ts\"",
     "client": "cd frontend/ && npm run dev",
     "dev": "concurrently \"npm run client\" \"npm run server\" "
   },
@@ -14,7 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "typescript": "^5.6.3"
   },
   "type": "module"
 }
