@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRoutes";
 import projectRouter from "./routes/projectRoutes";
 import taskRouter from "./routes/taskRoutes";
+import userRouter from "./routes/userRoutes"
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json()); // toto nám dovoluje parsovat příchozí request req.
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 app.use("/api/project", projectRouter);
 app.use("/task", taskRouter);
 

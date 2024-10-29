@@ -102,19 +102,17 @@ const verifyEmail = async (req: Request, res: Response) => {
 
 const loginUser = async (req: Request, res: Response) => {
   // použito lepší názvoslový pro oddělení emailu a passwordu z body a z DB
-  console.log(req.body);
-  
   const { userEmail, userPassword } = req.body;
   try {
     // kontrola zda email existuje v DB - musíme specifikovat, že hledáme email (tak je to nazvané v DB)
     const user = await User.findOne({ email: userEmail });
     if (!user) {
-      return res.status(400).json({ success: false, message: "Invalid credentials" });
+      return res.status(400).json({ success: false, message: "Invalid credentials - email" });
     }
     // kontrola zda se heslo shoduje
     const isPasswordValid = await bcrypt.compare(userPassword, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ success: false, message: "Invalid credentials" });
+      return res.status(400).json({ success: false, message: "Invalid credentials - password" });
     }
 
     // vygenerujeme token skrze custom metodu mongoose modelu user

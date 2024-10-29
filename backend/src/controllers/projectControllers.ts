@@ -7,7 +7,7 @@ import { JwtPayload } from "jsonwebtoken";
 export const getAllProjects = async (req: Request, res: Response) => {
   // async na začátku definice funkce znamená, že tato funkce je asynchronní a bude používat await pro čekání na dokončení asynchronních operací.
   try {
-    // vytažení objektu userToken, který jsme uložili do request v authMiddleware 
+    // vytažení objektu userToken, který jsme uložili do request v authMiddleware
     const userDecodedToken = req.userToken;
     if (!userDecodedToken) {
       return res.status(401).json({ success: false, message: "User not authenticated" });
@@ -16,8 +16,7 @@ export const getAllProjects = async (req: Request, res: Response) => {
     const { userId } = userDecodedToken;
 
     const projects = await Project.find({ userId: userId });
-    console.log(projects);
-    
+
     res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ success: false, message: "Error fetching projects", error });
@@ -42,14 +41,20 @@ export const getOneProject = async (req: Request, res: Response) => {
 // CREATE PROJECT
 export const createProject = async (req: Request, res: Response) => {
   try {
-    const { projectTitle, projectDescription, projectUserId } = req.body;
+    // extrahování dat z body
+    const { projectTitle, projectDescription } = req.body;
+    // extrahování objektu userToken + userId
+    const userDecodedToken = req.userToken;
+    if (!userDecodedToken) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+    const { userId } = userDecodedToken;
+
     const newProject = new Project({
       title: projectTitle,
       description: projectDescription,
-      userId: projectUserId,
+      userId: userId,
     });
-    console.log(newProject);
-
     //  Použití await znamená, že se kód zastaví a bude čekat na dokončení této operace.
     const createProject = await newProject.save();
     res.json(createProject);
