@@ -1,32 +1,34 @@
-// pokud používáme Typescript je důležité definovat proměnné, které uchováváme v useState
-export type TTask = {
-  _id: string,
-  title: string,
-  stage: number,
-  project: string
-};
-
-export type TProject = {
-  _id: string,
-  title: string,
-  description: string
-};
-
-export type TUser = {
-  _id: string,
-  email: string,
-  password: string,
-  name: string
-  token: string
+export interface User {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  token: string;
 }
 
-export type TProjectResponse = {
-  project: TProject,
-  tasks: TTask[]
+export interface Project {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+  priority: string;
+  tags: String[];
+  userId: string;
+  tasks: Task[]
 };
 
-export type TUpdateProject = {
-  title: string,
-  description: string
+export interface Task {
+  id: string;
+  title: string;
+  stage: number;
 };
 
+export type ProjectResponse = {
+  project: Project;
+  tasks: Task[];
+};
+
+export type UpdateProject = {
+  title: string;
+  description: string;
+};

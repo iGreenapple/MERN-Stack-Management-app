@@ -1,5 +1,4 @@
 // REDUCER + CONTEXT → pro správu dat uživatele po jeho přihlášení
-
 import React, { Dispatch, ReactNode, createContext, useReducer } from "react";
 
 export interface UserState {
