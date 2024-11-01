@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  _id: string;
   email: string;
   password: string;
   name: string;
@@ -7,21 +7,22 @@ export interface User {
 }
 
 export interface Project {
-  id: string;
+  // _id tneto název přebíráme již z databáze, takže je to konzistentní
+  _id: string;
   title: string;
   description?: string;
   status: string;
   priority: string;
   tags: String[];
   userId: string;
-  tasks: Task[]
-};
+  tasks: Task[];
+}
 
 export interface Task {
   id: string;
   title: string;
   stage: number;
-};
+}
 
 export type ProjectResponse = {
   project: Project;

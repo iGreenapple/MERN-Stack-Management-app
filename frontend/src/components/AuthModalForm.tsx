@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,9 +9,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { signupUser } from "../api/signupUser";
 import { loginUserApi } from "../api/loginUser";
+import { getUserApi } from "../api/getUser";
 
-import { AuthContext } from "../contexts/AuthContext";
-import { UserContext } from "../contexts/UserContext";
+import { useAuthContext } from "../contexts/AuthContext";
+import { useUserContext } from "../contexts/UserContext";
 
 interface AuthModalFormProps {
   type: "login" | "signup" | null;
@@ -26,21 +27,11 @@ const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, ti
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const authContext = useContext(AuthContext);
-  const userContext = useContext(UserContext);
-
-  if (!authContext) {
-    throw new Error("SignUpContext must be used within a SignUpProvider");
-  }
-  if (!userContext) {
-    throw new Error("UserContext must be used within a UserProvider");
-  }
-
-  // AuthContext - je nutné kvůli konfliktu dispatch přejmenovat na authDispatch
-  const { signup, login } = authContext.state;
-  const { dispatch: authDispatch } = authContext;
-  // UserContext - zde také specifikujeme o jaký dispatch se jedná
-  const { dispatch: userDispatch } = userContext;
+  // je nutné kvůli konfliktu dispatch přejmenovat na authDispatch
+  const { state, dispatch: authDispatch } = useAuthContext();
+  const { signup, login } = state;
+  // zde také přejmenováním specifikujeme o jaký dispatch se jedná
+  const { dispatch: userDispatch } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -79,16 +70,18 @@ const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, ti
       }
     } else {
       try {
-        const result = await loginUserApi(login.email, login.password);
-        console.log(result);
+        const loginResult = await loginUserApi(login.email, login.password);
+        console.log(loginResult);
 
-        if (result.success && result.userData) {
-          userDispatch({ type: "SET_USER", payload: result.userData });
-          setMessage(result.message);
+        const getUserResult = await getUserApi();
+
+        if (getUserResult.success && getUserResult.userData) {
+          userDispatch({ type: "SET_USER", payload: getUserResult.userData });
+          setMessage(getUserResult.message);
           navigate("/dashboard");
         } else {
-          setError(result.message);
-          console.error("Login failed:", result.message);
+          setError(getUserResult.message);
+          console.error("Login failed:", getUserResult.message);
         }
         // vymazaní obsahu formuláře
         authDispatch({ type: "RESET_FORM" });

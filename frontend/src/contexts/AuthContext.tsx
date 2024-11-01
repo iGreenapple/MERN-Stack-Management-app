@@ -1,6 +1,6 @@
 // REDUCER + CONTEXT →  pro správu stavů registračního a přihlašovacího formuláře
 
-import React, { createContext, Dispatch, ReactNode, useReducer } from "react";
+import React, { createContext, Dispatch, ReactNode, useContext, useReducer } from "react";
 
 // pro přehlednost je to zachována ve společném souboru (stejně se pak expostuje jen context)
 export interface AuthState {
@@ -69,4 +69,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [state, dispatch] = useReducer(authReducer, initialAuthState);
 
   return <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>;
+};
+// rovnou si zde můžeme vytvořit custom hook ve kterém i provedeme kontrolu zda jsem ve části aplikace kde je kontext dostupný
+export const useAuthContext = () => {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("SignUpContext must be used within a SignUpProvider");
+  }
+  return authContext;
 };

@@ -7,6 +7,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { ProjectsProvider } from "./contexts/ProjectsContext";
 
 library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft);
 
@@ -30,7 +31,9 @@ const App = () => {
   return (
     <AuthProvider>
       <UserProvider>
-        <RouterProvider router={router} />
+        <ProjectsProvider>
+          <RouterProvider router={router} />
+        </ProjectsProvider>
       </UserProvider>
     </AuthProvider>
   );

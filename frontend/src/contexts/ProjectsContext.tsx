@@ -1,5 +1,5 @@
 // REDUCER + CONTEXT → pro správu projektů uživatele
-import React, { Dispatch, ReactNode, createContext, useReducer } from "react";
+import React, { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import { Project } from "../types/types";
 
 export interface ProjectsState {
@@ -34,12 +34,12 @@ const projectsReducer = (state: ProjectsState, action: ProjectsAction): Projects
     case "UPDATE_PROJECT":
       return {
         ...state,
-        projects: state.projects.map((project) => (project.id === action.payload.id ? action.payload : project)),
+        projects: state.projects.map((project) => (project._id === action.payload._id ? action.payload : project)),
       };
     case "DELETE_PROJECT":
       return {
         ...state,
-        projects: state.projects.filter((project) => project.id !== action.payload),
+        projects: state.projects.filter((project) => project._id !== action.payload),
       };
     case "SET_LOADING":
       return { ...state, isLoading: action.payload };
@@ -62,4 +62,12 @@ export const ProjectsProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [state, dispatch] = useReducer(projectsReducer, initialProjectsState);
 
   return <ProjectsContext.Provider value={{ state, dispatch }}>{children}</ProjectsContext.Provider>;
+};
+
+export const useProjectsContext = () => {
+  const projectsContext = useContext(ProjectsContext);
+  if (!projectsContext) {
+    throw new Error("ProjectsContext must be used within a ProjectsProvider");
+  }
+  return projectsContext;
 };

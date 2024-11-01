@@ -1,5 +1,5 @@
 // REDUCER + CONTEXT → pro správu dat uživatele po jeho přihlášení
-import React, { Dispatch, ReactNode, createContext, useReducer } from "react";
+import React, { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 
 export interface UserState {
   userId: string | null;
@@ -40,4 +40,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [state, dispatch] = useReducer(userReducer, initialUserState);
 
   return <UserContext.Provider value={{ state, dispatch }}>{children}</UserContext.Provider>;
+};
+
+// rovnou si zde můžeme vytvořit custom hook ve kterém i provedeme kontrolu zda jsem ve části aplikace kde je kontext dostupný
+export const useUserContext = () => {
+  const userContext = useContext(UserContext);
+  if (!userContext) {
+    throw new Error("UserContext must be used within a UserProvider");
+  }
+  return userContext;
 };

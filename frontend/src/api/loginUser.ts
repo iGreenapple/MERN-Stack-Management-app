@@ -1,19 +1,15 @@
 import { API_URL } from "./config";
 
-interface UserData {
-  userId: string;
-  email: string;
-  name: string;
-}
+// interface UserData {
+//   userId: string;
+//   email: string;
+//   name: string;
+// }
 
 export const loginUserApi = async (
   userEmail: string,
   userPassword: string
-): Promise<{ success: boolean; message: string; userData?: UserData }> => {
-  console.log(userEmail);
-  console.log(userPassword);
-  
-  
+): Promise<{ success: boolean; message: string; }> => {
   try {
     const response = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
@@ -28,17 +24,17 @@ export const loginUserApi = async (
     if (!response.ok) {
       throw new Error(responseData.message || "Login failed");
     }
-    const { _id, email, name } = responseData.userData;
+    // const { _id, email, name } = responseData.userData;
     console.log("User logged in:", responseData);
 
     return {
       success: true,
       message: responseData.message || "Login successful",
-      userData: {
-        userId: _id,
-        email: email,
-        name: name,
-      },
+      // userData: {
+      //   userId: _id,
+      //   email: email,
+      //   name: name,
+      // },
     };
   } catch (error) {
     console.error("Error during user login:", error);

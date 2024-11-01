@@ -1,6 +1,6 @@
 import { API_URL } from "./config";
 
-export async function getProjects() {
+export async function getProjectsApi() {
   try {
     const response = await fetch(`${API_URL}/api/project`, {
       method: "GET",
@@ -9,7 +9,8 @@ export async function getProjects() {
       },
       credentials: "include", // Sends cookies with request
     });
-    console.log(response);
+    console.log("get projects");
+    
     if (!response.ok) {
       throw new Error("Failed to fetch projects");
     }
