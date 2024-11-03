@@ -1,5 +1,5 @@
 import ProjectCard from "./ProjectCard";
-import CreateModal from "./CreateModal";
+import CreateModal from "./modals/CreateProjectModal";
 
 import { Project } from "../types/types";
 
@@ -8,6 +8,7 @@ import useProjects from "../hooks/useProjects";
 import { useUserContext } from "../contexts/UserContext";
 import { useProjectsContext } from "../contexts/ProjectsContext";
 import { useFetchProjects } from "../hooks/useFetchProjects";
+import { useModalContext } from "../contexts/ModalContext";
 
 const Dashboard = () => {
   // Načítaní uživatelských dat z userContext skrze useUserContext
@@ -16,6 +17,8 @@ const Dashboard = () => {
 
   const { state: projectsState, dispatch } = useProjectsContext();
 
+  const { state, openModal } = useModalContext();
+
   // Volání hooku pro načítání projektů s callbackem na nastavení projektů v kontextu
   const { loading, error } = useFetchProjects((projects) => {
     dispatch({ type: "SET_PROJECTS", payload: projects });
@@ -23,8 +26,6 @@ const Dashboard = () => {
 
   // použité useState a handlery načítáme z vlastního hooku useProjects
   // const { openModal, toggleModal, handleCreateProject, handleDeleteProject } = useProjects(userId || "");
-
-  console.log("načtení");
 
   return (
     <>
@@ -38,7 +39,7 @@ const Dashboard = () => {
 
         <button
           className="absolute p-2 top-5 right-5 text-lg border-black border-2 rounded-full"
-          // onClick={toggleModal} // Použijeme toggleModal místo přímého nastavení stavu
+          onClick={() => openModal("create_ProjectModalOpen")}
         >
           {/* DOHLEDAT MÍSTO SVG free IKONU */}
           <svg
@@ -50,6 +51,7 @@ const Dashboard = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M20 0 L20 40 M0 20 L40 20" />
           </svg>
         </button>
+        {/* {state.createProjectModalOpen && <CreateModal onClick={() => closeModal("CREATE_MODAL")} />} */}
         {/* <CreateModal open={openModal} setModal={toggleModal} handleCreateProject={handleCreateProject} /> */}
         {projectsState.projects.length > 0 ? (
           <div className="flex flex-wrap justify-center gap-8 text-center">
@@ -60,12 +62,6 @@ const Dashboard = () => {
         ) : (
           <p>No projects to display</p>
         )}
-
-        {/* <div className="flex flex-wrap justify-center gap-8 text-center">
-        {projects.map((project: Project) => (
-          <ProjectCard key={project.id} project={project} deleteProjects={handleDeleteProject} />
-        ))}
-      </div> */}
       </div>
     </>
   );

@@ -2,27 +2,29 @@ import React, { useEffect } from "react";
 import { ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Button from "./1_atoms/Button";
-import FormField from "./2_molecules/FormField";
+import Button from "../1_atoms/Button";
+import FormField from "../2_molecules/FormField";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { signupUser } from "../api/signupUser";
-import { loginUserApi } from "../api/loginUser";
-import { getUserApi } from "../api/getUser";
+import { signupUser } from "../../api/signupUser";
+import { loginUserApi } from "../../api/loginUser";
+import { getUserApi } from "../../api/getUser";
 
-import { useAuthContext } from "../contexts/AuthContext";
-import { useUserContext } from "../contexts/UserContext";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useUserContext } from "../../contexts/UserContext";
 
-interface AuthModalFormProps {
+interface AuthFormModalProps {
   type: "login" | "signup" | null;
-  isOpen?: boolean;
   onClose?: () => void;
   title?: string;
   children?: ReactNode; // Pro případ, že bys chtěl přidat další obsah dovnitř modalu
 }
 
-const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, title }) => {
+const AuthFormModal: React.FC<AuthFormModalProps> = ({ type, onClose, title }) => {
+
+  console.log(`Rendering ${type} modal`)
+  
   // sign up and login error message
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +35,8 @@ const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, ti
   // zde také přejmenováním specifikujeme o jaký dispatch se jedná
   const { dispatch: userDispatch } = useUserContext();
 
-  const navigate = useNavigate();
+  // musíme zakomentovat, protože kvůli tomu, že ModalRenderer je mimo RouteProvider, takže nelze použít useNavigate
+  // const navigate = useNavigate();
 
   // proměnná co kontrolu jaký typ formuláře se zobrazí
   const [isSignup, setIsSignUp] = useState<boolean>(type === "signup");
@@ -78,7 +81,7 @@ const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, ti
         if (getUserResult.success && getUserResult.userData) {
           userDispatch({ type: "SET_USER", payload: getUserResult.userData });
           setMessage(getUserResult.message);
-          navigate("/dashboard");
+          // navigate("/dashboard");
         } else {
           setError(getUserResult.message);
           console.error("Login failed:", getUserResult.message);
@@ -92,7 +95,7 @@ const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, ti
     }
   };
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   return (
     // modal backdrop → pozadí kolem modalu, na které když kliknu tak se modal zavře
@@ -158,4 +161,4 @@ const AuthModalForm: React.FC<AuthModalFormProps> = ({ type, isOpen, onClose, ti
   );
 };
 
-export default AuthModalForm;
+export default AuthFormModal;

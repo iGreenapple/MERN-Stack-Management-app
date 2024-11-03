@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { loginUserApi } from "../api/loginUser";
 import { logoutUser } from "../api/logoutUser";
 
-// import { useAuth } from "../context/authContext";
-
 interface UseAuthReturn {
   isAuthenticated: boolean;
   openLoginModal: boolean;

@@ -1,9 +1,16 @@
 import { NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Button from "./1_atoms/Button";
+import { useModalContext } from "../contexts/ModalContext";
 
 const NavBar = () => {
   const { isAuthenticated, toggleLoginModal, toggleRegisterModal, handleLogout } = useAuth();
+
+  const { state, openModal, closeModal } = useModalContext();
+
+  // Načítaní uživatelských dat z userContext skrze useUserContext
+  // const { state: userState } = useUserContext();
+  // const { userId, email, name } = userState;
 
   return (
     <nav className="w-full flex justify-between items-center py-5 top-0">
@@ -20,8 +27,12 @@ const NavBar = () => {
           </>
         ) : (
           <>
-            <Button type="button" onClick={toggleLoginModal}>Log in</Button>
-            <Button type="button" onClick={toggleRegisterModal}>Sign up</Button>
+            <Button type="button" onClick={() => openModal("signup_AuthModalOpen")}>
+          Sign up
+        </Button>
+        <Button type="button" onClick={() => openModal("login_AuthModalOpen")}>
+          Login
+        </Button>
           </>
         )}
       </ul>

@@ -19,7 +19,7 @@ export interface Project {
 }
 
 export interface Task {
-  id: string;
+  _id: string;
   title: string;
   stage: number;
 }

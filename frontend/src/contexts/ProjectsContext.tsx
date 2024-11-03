@@ -2,7 +2,7 @@
 import React, { Dispatch, ReactNode, createContext, useContext, useReducer } from "react";
 import { Project } from "../types/types";
 
-export interface ProjectsState {
+interface ProjectsState {
   projects: Project[];
   isLoading: boolean;
   error: string | null;
@@ -11,7 +11,7 @@ export interface ProjectsState {
 // type určuje včechny možné operace
 // payload nastavuje všechny možnosti vstupních dat do operací
 // je lepší zapsat každý action a type jeho payloadu zvlášť, protože pak TS konkrétně ví co u jaké akce má čekat
-export type ProjectsAction =
+type ProjectsAction =
   | { type: "SET_PROJECTS"; payload: Project[] }
   | { type: "ADD_PROJECT"; payload: Project }
   | { type: "UPDATE_PROJECT"; payload: Project }

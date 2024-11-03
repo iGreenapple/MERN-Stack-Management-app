@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { TTask } from '../types/types'
+import { Task } from '../types/types'
 
 interface TaskCardProps {
-  task: TTask
-  updateTask: (taskId: string, updates: Partial<TTask>) => Promise<void>;
+  task: Task
+  updateTask: (taskId: string, updates: Partial<Task>) => Promise<void>;
   deleteTask: (taskId: string) => Promise<void>;
 }
 

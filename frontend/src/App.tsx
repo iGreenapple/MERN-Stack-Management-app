@@ -8,6 +8,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { ProjectsProvider } from "./contexts/ProjectsContext";
+import { ModalProvider } from "./contexts/ModalContext";
+import ModalRenderer from "./components/modals/ModalRenderer";
 
 library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft);
 
@@ -21,7 +23,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/project/:projectId" element={<ProjectBoard />}  />
+      <Route path="/project/:projectId" element={<ProjectBoard />} />
       <Route path="/about" element={<About />} />
     </Route>
   )
@@ -32,7 +34,10 @@ const App = () => {
     <AuthProvider>
       <UserProvider>
         <ProjectsProvider>
-          <RouterProvider router={router} />
+          <ModalProvider>
+            <RouterProvider router={router} />
+            <ModalRenderer />
+          </ModalProvider>
         </ProjectsProvider>
       </UserProvider>
     </AuthProvider>

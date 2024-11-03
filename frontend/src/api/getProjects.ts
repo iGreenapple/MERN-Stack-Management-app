@@ -9,7 +9,6 @@ export async function getProjectsApi() {
       },
       credentials: "include", // Sends cookies with request
     });
-    console.log("get projects");
     
     if (!response.ok) {
       throw new Error("Failed to fetch projects");
