@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-// import { SignUpContext } from "../../contexts/SignUpContext";
 
 // do props naší komponenty vkládáme všechny default input atributy
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}

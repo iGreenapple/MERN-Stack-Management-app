@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
 import NavBar from "../NavBar"
+import ModalRenderer from "../modals/ModalRenderer"
 
 const RootLayout = () => {
   return (
@@ -11,6 +12,8 @@ const RootLayout = () => {
         {/* The children route element is rendered to the Outlet if there is a corresponding element in the route*/}
         <Outlet />  
       </main>
+      {/* ModalRenderer se vykreslí na úrovni RootLayout, tedy je i součástí RouteProvideru */}
+      <ModalRenderer />
     </div>
   )
 }
