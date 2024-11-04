@@ -13,6 +13,8 @@ import { getUserApi } from "../../api/getUser";
 
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useUserContext } from "../../contexts/UserContext";
+import CloseButton from "../1_atoms/CloseButton";
+import Form from "../3_organism/Form";
 
 interface AuthFormModalProps {
   type: "login" | "signup" | null;
@@ -22,21 +24,18 @@ interface AuthFormModalProps {
 }
 
 const AuthFormModal: React.FC<AuthFormModalProps> = ({ type, onClose, title }) => {
-
-  console.log(`Rendering ${type} modal`)
-  
   // sign up and login error message
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // je nutné kvůli konfliktu dispatch přejmenovat na authDispatch
   const { state, dispatch: authDispatch } = useAuthContext();
-  const { signup, login } = state;
+  const { signup, login: authContextLogin } = state;
   // zde také přejmenováním specifikujeme o jaký dispatch se jedná
-  const { dispatch: userDispatch } = useUserContext();
+  const { login: userContextLogin } = useUserContext();
 
-  // musíme zakomentovat, protože kvůli tomu, že ModalRenderer je mimo RouteProvider, takže nelze použít useNavigate
-  // const navigate = useNavigate();
+
+  const navigate = useNavigate();
 
   // proměnná co kontrolu jaký typ formuláře se zobrazí
   const [isSignup, setIsSignUp] = useState<boolean>(type === "signup");
@@ -62,24 +61,21 @@ const AuthFormModal: React.FC<AuthFormModalProps> = ({ type, onClose, title }) =
         } else {
           setError(result.message);
         }
-        // Nastaví úspěšnou zprávu
-        // vymaže states pro email a password a změní form na Login
-        // setEmail("");
-        // setPassword("");
-        // setIsSignUp(!isSignup);
         authDispatch({ type: "RESET_FORM" });
       } catch (error) {
         console.error("An unexpected error occurred during signup:", error);
       }
     } else {
       try {
-        const loginResult = await loginUserApi(login.email, login.password);
+        const loginResult = await loginUserApi(authContextLogin.email, authContextLogin.password);
         console.log(loginResult);
 
         const getUserResult = await getUserApi();
 
         if (getUserResult.success && getUserResult.userData) {
-          userDispatch({ type: "SET_USER", payload: getUserResult.userData });
+          const { userId, email, name } = getUserResult.userData 
+          userContextLogin( userId, email, name)
+          // userDispatch({ type: "SET_USER", payload: getUserResult.userData });
           setMessage(getUserResult.message);
           // navigate("/dashboard");
         } else {
@@ -107,10 +103,8 @@ const AuthFormModal: React.FC<AuthFormModalProps> = ({ type, onClose, title }) =
       >
         {/* primárně bere prop title, pokud není tak podle type */}
         <h1 className="font-bold text-2xl text-left">{title || (isSignup ? "Sign up" : "Login")}</h1>
-        <button className="absolute w-10 h-10 top-2 right-2" onClick={onClose}>
-          <FontAwesomeIcon icon="xmark" size="2xl" />
-        </button>
-        <form className="flex flex-col gap-1" onSubmit={handleSubmit} noValidate>
+        <CloseButton onClick={onClose} />
+        <Form onSubmit={handleSubmit} noValidate errorMessage={""}>
           <FormField
             label="Email"
             type="email"
@@ -153,7 +147,7 @@ const AuthFormModal: React.FC<AuthFormModalProps> = ({ type, onClose, title }) =
           <Button className="mt-2" type="submit">
             {title || (isSignup ? "Sign up" : "Login")}
           </Button>
-        </form>
+        </Form>
         {message && <p style={{ color: "green" }}>{message}</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>

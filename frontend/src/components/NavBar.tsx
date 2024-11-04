@@ -1,16 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Button from "./1_atoms/Button";
 import { useModalContext } from "../contexts/ModalContext";
+import { useUserContext } from "../contexts/UserContext";
 
 const NavBar = () => {
-  const { isAuthenticated, toggleLoginModal, toggleRegisterModal, handleLogout } = useAuth();
+  // const { isAuthenticated, toggleLoginModal, toggleRegisterModal, handleLogout } = useAuth();
 
-  const { state, openModal, closeModal } = useModalContext();
+  // const { state, openModal, closeModal } = useModalContext();
+
+  const navigate = useNavigate();
 
   // Načítaní uživatelských dat z userContext skrze useUserContext
-  // const { state: userState } = useUserContext();
-  // const { userId, email, name } = userState;
+  const { state: userState, logout } = useUserContext();
 
   return (
     <nav className="w-full flex justify-between items-center py-5 top-0">
@@ -18,21 +20,20 @@ const NavBar = () => {
         Project | M
       </NavLink>
       <ul className="w-[20%] flex gap-6 mr-8">
-        {isAuthenticated ? (
+        {!userState.isAuthenticated ? (
           <>
-            <NavLink className="logo text-lg" to="/dashboard">
-              Dashboard |
-            </NavLink>
-            <Button type="button" onClick={handleLogout}></Button>
+            <p>User not login</p>
           </>
         ) : (
           <>
-            <Button type="button" onClick={() => openModal("signup_AuthModalOpen")}>
-          Sign up
-        </Button>
-        <Button type="button" onClick={() => openModal("login_AuthModalOpen")}>
-          Login
-        </Button>
+            <div className="flex flex-col">
+              <p>user: {userState.email}</p>
+              <p>name: {userState.name}</p>
+            </div>
+
+            <NavLink to="/dashboard">
+              <Button>Dashboard</Button>
+            </NavLink>
           </>
         )}
       </ul>

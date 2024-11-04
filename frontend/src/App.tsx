@@ -9,7 +9,6 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { ProjectsProvider } from "./contexts/ProjectsContext";
 import { ModalProvider } from "./contexts/ModalContext";
-import ModalRenderer from "./components/modals/ModalRenderer";
 
 library.add(faXmark, faCheckSquare, faChevronRight, faChevronLeft);
 
@@ -36,7 +35,6 @@ const App = () => {
         <ProjectsProvider>
           <ModalProvider>
             <RouterProvider router={router} />
-            <ModalRenderer />
           </ModalProvider>
         </ProjectsProvider>
       </UserProvider>

@@ -13,7 +13,7 @@ import { useModalContext } from "../contexts/ModalContext";
 const Dashboard = () => {
   // Načítaní uživatelských dat z userContext skrze useUserContext
   const { state: userState } = useUserContext();
-  const { userId, email, name } = userState;
+  // const { userId, email, name } = userState;
 
   const { state: projectsState, dispatch } = useProjectsContext();
 
@@ -29,10 +29,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <div>
-        <h1>Username: {name}</h1>
-        <p>Email: {email}</p>
-      </div>
       <div className="relative w-screen h-full flex flex-auto flex-col items-center justify-evenly gap-5">
         {loading && <p>Loading projects...</p>}
         {error && <p>{error}</p>}
