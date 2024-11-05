@@ -86,8 +86,11 @@ const verifyEmail = async (req: Request, res: Response) => {
     user.verificationToken = undefined;
     user.verificationTokenExpiresAt = undefined;
     await user.save();
-
-    await sendWelcomeEmail(user.email, user.name);
+    // dočasná podmínka, protože ve free verzi nemůžu posílat mail jinam
+    if (user.email === "stanekondras44@gmail.com") {
+      await sendWelcomeEmail(user.email, user.name);
+    }
+    
 
     const { password: _, ...user_data } = user;
 

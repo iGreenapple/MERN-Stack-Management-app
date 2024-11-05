@@ -7,7 +7,7 @@ import { useUserContext } from "../contexts/UserContext";
 const NavBar = () => {
   // const { isAuthenticated, toggleLoginModal, toggleRegisterModal, handleLogout } = useAuth();
 
-  // const { state, openModal, closeModal } = useModalContext();
+  const { state, openModal, closeModal } = useModalContext();
 
   const navigate = useNavigate();
 
@@ -19,10 +19,16 @@ const NavBar = () => {
       <NavLink to="/" className="logo font-medium text-dark text-4xl ml-7">
         Project | M
       </NavLink>
-      <ul className="w-[20%] flex gap-6 mr-8">
+      <ul className="w-[40%] h-10 flex gap-6 mr-8">
         {!userState.isAuthenticated ? (
           <>
             <p>User not login</p>
+            <Button type="button" onClick={() => openModal("signup_AuthModalOpen")}>
+              Sign up
+            </Button>
+            <Button type="button" onClick={() => openModal("login_AuthModalOpen")}>
+              Login
+            </Button>
           </>
         ) : (
           <>
@@ -34,6 +40,9 @@ const NavBar = () => {
             <NavLink to="/dashboard">
               <Button>Dashboard</Button>
             </NavLink>
+            <Button type="button" onClick={() => logout()}>
+              Login
+            </Button>
           </>
         )}
       </ul>

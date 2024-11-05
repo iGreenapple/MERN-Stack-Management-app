@@ -1,7 +1,8 @@
 // REDUCER + CONTEXT → pro správu dat uživatele po jeho přihlášení
-import React, { Dispatch, ReactNode, createContext, useContext, useEffect, useReducer } from "react";
+import React, { ReactNode, createContext, useContext, useEffect, useReducer } from "react";
 import { getUserApi } from "../api/getUser";
 
+// základní data o uživateli + is 
 export interface UserState {
   userId: string | null;
   email: string | null;
@@ -13,16 +14,18 @@ export type UserAction =
   | { type: "LOGIN"; payload: { userId: string; email: string; name: string } }
   | { type: "LOGOUT" };
 
+// úvodní stav pro uživatele
 const initialUserState: UserState = {
   userId: null,
   name: null,
   email: null,
   isAuthenticated: false,
 };
-
+// reducer poskytuje 
 const userReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case "LOGIN":
+      // 
       return { ...state, ...action.payload, isAuthenticated: true };
     case "LOGOUT":
       return initialUserState;
@@ -39,9 +42,12 @@ interface UserContextType {
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(userReducer, initialUserState);
 
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  // useReducer požaduje dvě hodnoty - 1. funkci se switch, 2. initial state proměnou
+  const [state, dispatch] = useReducer(userReducer, initialUserState);
+  // místo dispatch vracíme v Provideru funkce, které dispatch zpracovávají
+  // login - 
   const login = (userId: string, email: string, name: string) => {
     dispatch({ type: "LOGIN", payload: { userId, email, name } });
     document.cookie = "isAuthenticated=true";
@@ -55,6 +61,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Kontrola autentizace při načtení aplikace
   useEffect(() => {
     const cookie = document.cookie.split("; ").find((row) => row.startsWith("isAuthenticated="));
+    console.log(document.cookie);
+    
     const isAuthenticated = cookie?.split("=")[1] === "true";
 
     if (isAuthenticated) {
