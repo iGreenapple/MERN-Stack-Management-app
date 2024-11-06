@@ -5,7 +5,6 @@ import CreateModal from "./CreateProjectModal";
 
 const ModalRenderer: React.FC = () => {
   const { state, closeModal } = useModalContext();
-  console.log(state);
 
   return (
     <>
