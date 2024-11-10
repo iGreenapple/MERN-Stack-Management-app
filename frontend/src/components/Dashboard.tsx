@@ -3,14 +3,10 @@ import CreateModal from "./modals/CreateProjectModal";
 
 import { Project } from "../types/types";
 
-import useProjects from "../hooks/useProjects";
-
 import { useUserContext } from "../contexts/UserContext";
 import { useProjectsContext } from "../contexts/ProjectsContext";
-import { useFetchProjects } from "../hooks/useFetchProjects";
+import { useFetchProjects } from "../hooks/projects/useFetchProjects";
 import { useModalContext } from "../contexts/ModalContext";
-import { FiPlusCircle } from "react-icons/fi";
-import { RxPlusCircled } from "react-icons/rx";
 import { PiPlusCircleThin } from "react-icons/pi";
 
 const Dashboard = () => {
@@ -35,14 +31,10 @@ const Dashboard = () => {
       {loading && <p>Loading projects...</p>}
       {error && <p>{error}</p>}
 
-      
-      <button
-        className="absolute top-5 right-5"
-        onClick={() => openModal("create_ProjectModalOpen")}
-      >
-        <PiPlusCircleThin size={48} onClick={() => openModal("create_ProjectModalOpen")}/>
+      <button className="absolute top-5 right-5" onClick={() => openModal("create_ProjectModalOpen")}>
+        <PiPlusCircleThin size={48} onClick={() => openModal("create_ProjectModalOpen")} />
       </button>
-      
+
       {projectsState.projects.length > 0 ? (
         <div className="flex flex-wrap justify-center gap-8 text-center">
           {projectsState.projects.map((project: Project) => (

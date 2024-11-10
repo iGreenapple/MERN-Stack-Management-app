@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route, N
 import { RootLayout, Home, Dashboard, ProjectBoard, About } from "./components";
 
 import { UserProvider } from "./contexts/UserContext";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthFormProvider } from "./contexts/forms/AuthFormContext";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark, faCheckSquare, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -30,7 +30,7 @@ const router = createBrowserRouter(
 
 const App = () => {
   return (
-    <AuthProvider>
+    
       <UserProvider>
         <ProjectsProvider>
           <ModalProvider>
@@ -38,7 +38,7 @@ const App = () => {
           </ModalProvider>
         </ProjectsProvider>
       </UserProvider>
-    </AuthProvider>
+    
   );
 };
 

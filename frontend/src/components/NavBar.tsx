@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import Button from "./1_atoms/Button";
 import { useModalContext } from "../contexts/ModalContext";
 import { useUserContext } from "../contexts/UserContext";
+import { VscAccount } from "react-icons/vsc";
 
 export const NavBar = () => {
   // const { isAuthenticated, toggleLoginModal, toggleRegisterModal, handleLogout } = useAuth();
@@ -12,11 +13,11 @@ export const NavBar = () => {
   const { state: userState, logout } = useUserContext();
 
   return (
-    <nav className="w-full flex items-center py-5">
+    <nav className="w-full flex items-center py-3">
       <NavLink to="/" className="logo font-medium text-dark text-4xl ml-7">
         Project | M
       </NavLink>
-      <ul className="w-64 ml-auto mr-5 fle items-center gap-6">
+      <div className="ml-auto mr-5 p-2 items-center gap-6">
         {!userState.isAuthenticated ? (
           <div className="flex gap-6">
             <Button type="button" onClick={() => openModal("signup_AuthModalOpen")}>
@@ -28,14 +29,13 @@ export const NavBar = () => {
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-4">
-              <img></img>
-              <p>user: {userState.email}</p>
-              <p>name: {userState.name}</p>
+            <div className="flex justify-center gap-4 h-full">
+              <VscAccount size={32} />
+              <p>{userState.name}</p>
             </div>
           </>
         )}
-      </ul>
+      </div>
     </nav>
   );
 };

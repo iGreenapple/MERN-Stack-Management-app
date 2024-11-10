@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Project } from "../types/types";
-import { getProjectsApi } from "../api/getProjects";
+import { Project } from "../../types/types";
+import { getProjectsApi } from "../../api/getProjects";
 
 export const useFetchProjects = (setProjects: (projects: Project[]) => void) => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,7 @@ export const useFetchProjects = (setProjects: (projects: Project[]) => void) => 
       setLoading(true);
       try {
         const loadedProjects = await getProjectsApi();
-        
+
         setProjects(loadedProjects);
       } catch (err) {
         setError("Error fetching projects");

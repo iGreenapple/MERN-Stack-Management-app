@@ -41,19 +41,19 @@ export const getOneProject = async (req: Request, res: Response) => {
 // CREATE PROJECT
 export const createProject = async (req: Request, res: Response) => {
   try {
-    // extrahování dat z body
-    const { projectTitle, projectDescription } = req.body;
     // extrahování objektu userToken + userId
     const userDecodedToken = req.userToken;
     if (!userDecodedToken) {
       return res.status(401).json({ success: false, message: "User not authenticated" });
     }
     const { userId } = userDecodedToken;
+    // extrahování dat z body
+    const { title, description } = req.body;
 
     const newProject = new Project({
-      title: projectTitle,
-      description: projectDescription,
-      userId: userId,
+      title,
+      description,
+      userId,
     });
     //  Použití await znamená, že se kód zastaví a bude čekat na dokončení této operace.
     const createProject = await newProject.save();

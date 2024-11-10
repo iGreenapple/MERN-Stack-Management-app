@@ -17,6 +17,11 @@ export interface Project {
   userId: string;
   tasks: Task[];
 }
+// Ořezané rozhraní NewProject → určené pro zaslání vstupních dat při vytváření projektu (zbytek je vytvořen v backend)
+export interface NewProject {
+  title: string;
+  description?: string;
+} 
 
 export interface Task {
   _id: string;
@@ -24,10 +29,10 @@ export interface Task {
   stage: number;
 }
 
-export type ProjectResponse = {
-  project: Project;
-  tasks: Task[];
-};
+// export type ProjectResponse = {
+//   project: Project;
+//   tasks: Task[];
+// };
 
 export type UpdateProject = {
   title: string;

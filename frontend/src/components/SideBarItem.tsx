@@ -15,17 +15,17 @@ export const SideBarItem: React.FC<SideBarItemProps> = ({ icon, label, className
       {/* Ikona */}
       {redirectTo ? (
         <NavLink to={redirectTo}>
-          <div className="text-dark font-xl p-2 cursor-pointer hover:bg-lightgrey rounded-full">{icon}</div>
+          <div className="text-light font-xl p-2 cursor-pointer hover:bg-lightgrey rounded-full">{icon}</div>
         </NavLink>) : (
-          <div className="text-dark font-xl p-2 cursor-pointer hover:bg-lightgrey rounded-full"onClick={onClick}>{icon}</div>
+          <div className="text-light font-xl p-2 cursor-pointer hover:bg-lightgrey rounded-full"onClick={onClick}>{icon}</div>
         )}
       
     
 
       {/* Popisek viditelný při hover */}
       <span
-        className="absolute left-14 bg-dark text-white text-sm py-1 px-2 rounded-md opacity-0 
-                 group-hover:opacity-100 group-hover:translate-x-0 translate-x-[-10px] transition-all duration-200"
+        className="absolute left-[50px] bg-dark text-white text-sm py-4 px-2 rounded-md opacity-0 
+                 group-hover:opacity-100 group-hover:translate-x-0 translate-x-[-10px] transition-all ease-in duration-600"
       >
         {label}
       </span>

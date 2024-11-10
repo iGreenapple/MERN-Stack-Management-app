@@ -24,17 +24,11 @@ export const loginUserApi = async (
     if (!response.ok) {
       throw new Error(responseData.message || "Login failed");
     }
-    // const { _id, email, name } = responseData.userData;
     console.log("User logged in:", responseData);
 
     return {
       success: true,
       message: responseData.message || "Login successful",
-      // userData: {
-      //   userId: _id,
-      //   email: email,
-      //   name: name,
-      // },
     };
   } catch (error) {
     console.error("Error during user login:", error);

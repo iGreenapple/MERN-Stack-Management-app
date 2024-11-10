@@ -1,13 +1,7 @@
 import Button from "./Button";
 import ErrorMessage from "./ErrorMessage";
-import Input from "./Input";
+import { FormInput } from "./FormInput";
 import Label from "./Label";
-import TextArea from "./TextArea";
+import { FormTextArea } from "./FormTextArea";
 
-export {
-  Button,
-  Input, 
-  TextArea, 
-  Label, 
-  ErrorMessage
-}
+export { Button, FormInput, FormTextArea, Label, ErrorMessage };

@@ -125,10 +125,10 @@ const loginUser = async (req: Request, res: Response) => {
     setCookie(res, token);
 
     // vytvoření objektu s vybranými user daty k odeslání v response - :_ je nutné kvůli oddělení tohoto emailu od předem použité proměnné
-    const { _id, email, name } = user;
+    const { email } = user;
     // const { password: _, ...userData } = user;
 
-    return res.status(200).json({ success: true, message: "User log in successfully", userData: { _id, email, name } });
+    return res.status(200).json({ success: true, message: `User (${email}) log in successfully`});
   } catch (error) {
     if (error instanceof Error) {
       console.log("Error in loginUser ", error);

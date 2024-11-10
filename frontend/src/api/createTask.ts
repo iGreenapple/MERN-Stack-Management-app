@@ -1,7 +1,7 @@
-import { TTask } from "../types/types";
+import { Task } from "../types/types";
 import { API_URL } from "./config";
 
-export async function createTask(projectId:string, taskTitle: string): Promise<TTask> {
+export async function createTask(projectId:string, taskTitle: string): Promise<Task> {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No token found');
@@ -19,7 +19,7 @@ export async function createTask(projectId:string, taskTitle: string): Promise<T
         projectId
       }),
     });
-    const taskData: TTask = await response.json();
+    const taskData: Task = await response.json();
     console.log('New task created:', taskData);
     return taskData;
   }

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import UpdateModal from "./UpdateModal";
+import UpdateModal from "./modals/UpdateProjectModal";
 import ProjectBoardColumn from "./ProjectBoardColumn";
 
 import useTasks from "../hooks/useTasks";
-import useProjects from "../hooks/useProjects";
 
 const ProjectBoard = () => {
   // název proměnné v useParams, musí odpovídat názvu v url adrese /project/:projectId → const { projectId }
@@ -14,17 +13,8 @@ const ProjectBoard = () => {
   // Typescript totiž předpokládá, že z useParams můžeme dostat string nebo nic (undefined)
   // více přístupů na https://bobbyhadz.com/blog/typescript-argument-type-undefined-not-assignable-parameter-type-string
   const openedProjectId = projectId !== undefined ? projectId : "";
-  const {
-    tasks,
-    project,
-    openModal,
-    toggleModal,
-    handleCreateTask,
-    handleUpdateTask,
-    handleDeleteTask,
-  } = useTasks(openedProjectId);
-
-  const { handleUpdateProject } = useProjects();
+  const { tasks, project, openModal, toggleModal, handleCreateTask, handleUpdateTask, handleDeleteTask } =
+    useTasks(openedProjectId);
 
   const [addedTask, setAddedTask] = useState("");
 
@@ -75,12 +65,7 @@ const ProjectBoard = () => {
       </div>
       <p className="box mb-5">{project.description}</p>
 
-      <UpdateModal
-        openedProject={project}
-        open={openModal}
-        setModal={toggleModal}
-        handleUpdateProject={handleUpdateProject}
-      />
+      <UpdateModal openedProject={project} open={openModal} setModal={toggleModal} />
 
       <div className="flex flex-wrap gap-8 justify-evenly">
         <ProjectBoardColumn
