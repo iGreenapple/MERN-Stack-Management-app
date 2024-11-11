@@ -14,7 +14,7 @@ import { getUserApi } from "../../api/getUser";
 import { useAuthFormContext } from "../../contexts/forms/AuthFormContext";
 import { useUserContext } from "../../contexts/UserContext";
 import { useModalContext } from "../../contexts/ModalContext";
-import { ModalWrapper } from "../ModalWrapper";
+import { ModalWrapper } from "./ModalWrapper";
 
 interface AuthFormModalProps {
   type: "login" | "signup";
@@ -48,7 +48,7 @@ const AuthFormModal: React.FC<AuthFormModalProps> = ({ type, onClose, children }
 
   const handleSubmit = async (e: React.FormEvent) => {
     console.log(e);
-    
+
     e.preventDefault();
     setMessage(null);
     setError(null);

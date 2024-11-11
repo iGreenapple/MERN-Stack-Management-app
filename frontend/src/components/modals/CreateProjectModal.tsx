@@ -4,26 +4,25 @@ import Form from "../3_organism/Form";
 import { Button } from "../1_atoms";
 import CloseButton from "../1_atoms/CloseButton";
 import { useCreateProjects } from "../../hooks/projects/useCreateProjects";
-import { ModalWrapper } from "../ModalWrapper";
-import { useCreateProjectForm } from "../../contexts/forms/CreateProjectFormContext";
+import { ModalWrapper } from "./ModalWrapper";
+import { CreateProjectFormProvider, useCreateProjectForm } from "../../contexts/forms/CreateProjectFormContext";
 interface CreateProjectModalProps {
   onClose?: () => void;
-  handleCreateProject?: (title: string, description: string) => Promise<void>;
   children?: ReactNode;
 }
 
-const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ onClose, handleCreateProject, children }) => {
+const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ onClose, children }) => {
   const { createProject, loading, error } = useCreateProjects();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+
+  const { state, dispatch } = useCreateProjectForm();
+  const { title, description } = state;
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await createProject({ title, description });
-      // await handleCreateProject(title, description)
-      setTitle("");
-      setDescription("");
+      // resetování formuláře po odeslání api
+      dispatch({ type: "RESET_FORM" });
     } catch (error) {
       console.error("Failed during form submit:", error);
     }

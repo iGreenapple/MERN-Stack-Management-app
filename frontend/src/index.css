@@ -13,16 +13,16 @@
 }
 
 .home-heading {
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
   font-size: 2rem;
 }
 
 .logo {
   /* font-family: 'Bebas Neue', sans-serif; */
-  font-family: 'Kanit', sans-serif; 
+  font-family: "Kanit", sans-serif;
 }
 
-.bw-border{
+.bw-border {
   border: 2px solid black;
   /* border-right-width: 8px; */
   border-bottom-width: 8px;
@@ -33,7 +33,3 @@
 :root {
   color: rgba(8, 8, 8, 0.87);
 }
-
-
-
-

@@ -17,9 +17,7 @@ export const FormTextArea: React.FC<FormTextAreaProps> = ({
   placeholder,
   ...rest
 }) => {
-
   const { value, onChange } = useFormInput({ context, formName, field: name });
-  console.log("FormTextArea value:", value);
 
   return (
     <textarea

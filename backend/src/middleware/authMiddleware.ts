@@ -19,7 +19,6 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     
     if (!decoded) return res.status(401).json({ success: false, message: "Unauthorized - invalid token" });
     req.userToken = decoded; // Předpokládáme, že v tokenu je uložený uživatelský objekt
-    // console.log(req.user);
     
     next();
   } catch (error) {
